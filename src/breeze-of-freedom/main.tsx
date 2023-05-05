@@ -1,7 +1,8 @@
 import { createRef, useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useGestureDetector } from './useGestureDetector';
-import { useCallbackRef } from 'use-callback-ref';
+import { useRefWithUpdate } from '../hooks/useCallbackRef';
+import { Painting } from '../foundation/P5Frame';
 
 const DemosSection = styled.section`
   display: flex;
@@ -21,17 +22,9 @@ const Video = styled.video`
 `;
 
 const MainPage = () => {
-  const [, forceUpdate] = useState<number>();
-  const forceUpdateFn = useCallback(() => {
-    forceUpdate(Math.random());
-  }, [forceUpdate]);
-
-  const videoRef = useCallbackRef<HTMLVideoElement>(null, forceUpdateFn);
-  const canvasRef = useCallbackRef<HTMLCanvasElement>(null, forceUpdateFn);
-  const enableCamButtonRef = useCallbackRef<HTMLButtonElement>(
-    null,
-    forceUpdateFn
-  );
+  const videoRef = useRefWithUpdate<HTMLVideoElement>();
+  const canvasRef = useRefWithUpdate<HTMLCanvasElement>();
+  const enableCamButtonRef = useRefWithUpdate<HTMLButtonElement>();
   useGestureDetector({
     videoElement: videoRef.current!,
     canvasElement: canvasRef.current!,
@@ -43,6 +36,7 @@ const MainPage = () => {
     <div>
       <Video ref={videoRef} autoPlay playsInline />
       <Canvas ref={canvasRef} />
+      <Painting />
       <button ref={enableCamButtonRef}>enable cam</button>
     </div>
   );
