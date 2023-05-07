@@ -35,7 +35,7 @@ export class Particle {
       p: this.p,
       step: 0.001,
       xOffset: this.p.random(1000),
-      range: [-100, 100],
+      range: [-150, 40],
     });
   }
 
