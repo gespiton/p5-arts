@@ -1,5 +1,5 @@
 import { P5Frame } from '../foundation/P5Frame';
-import sketch from '../sketches/particlePerformanceTest';
+import sketch from './sketches/particlePerformanceTest';
 
 const MainPage = () => {
   return (
