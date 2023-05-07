@@ -16,10 +16,10 @@ function caos(p5: p5) {
     p5.clear(0, 0, 0, 0);
     p5.background(0);
     p5.blendMode(p5.ADD);
-    let force = p5.createVector(0, -0.1);
+    let force = p5.createVector(0, -0.5);
     emitter.applyForce(force);
 
-    let dir = p5.map(p5.mouseX, 0, p5.width, -0.1, 0.1);
+    let dir = p5.map(p5.mouseX, 0, p5.width, -0.4, 0.4);
     let wind = p5.createVector(dir, 0);
     emitter.applyForce(wind);
 

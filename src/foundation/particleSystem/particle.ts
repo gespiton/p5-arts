@@ -6,6 +6,7 @@
 
 import p5 from 'p5';
 import image from './texture32.png';
+import { PerlinNoise } from '../utils/PerlinNoise';
 
 // Texture Maker: https://editor.p5js.org/codingtrain/sketches/NS4rB1Yx-
 // Image Texture: https://editor.p5js.org/codingtrain/sketches/TTVoNt58T
@@ -20,6 +21,7 @@ export class Particle {
 
   p: p5;
   img: p5.Image;
+  noise: PerlinNoise;
   constructor(x: number, y: number, p5: p5) {
     this.p = p5;
     this.pos = this.p.createVector(x, y);
@@ -29,6 +31,12 @@ export class Particle {
     this.r = 64;
     this.lifetime = 255;
     this.img = p5.loadImage(image);
+    this.noise = PerlinNoise.getInstance({
+      p: this.p,
+      step: 0.001,
+      xOffset: this.p.random(1000),
+      range: [-100, 100],
+    });
   }
 
   finished() {
@@ -44,11 +52,12 @@ export class Particle {
     this.pos.add(this.vel);
     this.acc.set(0, 0);
 
-    this.lifetime -= 7;
+    this.lifetime -= 10;
   }
 
   show() {
-    this.p.tint(150, 40, 80, this.lifetime);
+    const variant = this.noise.next();
+    this.p.tint(150 + variant, 40, 80, this.lifetime);
     this.p.imageMode(this.p.CENTER);
     this.p.image(this.img, this.pos.x, this.pos.y, this.r, this.r);
     // ellipse(this.pos.x, this.pos.y, this.r * 2);
