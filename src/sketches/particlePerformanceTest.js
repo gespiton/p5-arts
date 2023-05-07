@@ -20,43 +20,26 @@ function sketch(p5) {
   let iterations = 200;
   let numParticles = 1000;
   let particles = [];
-  const {
-    createCanvas,
-    colorMode,
-    random,
-    color,
-    millis,
-    background,
-    cos,
-    sin,
-    width,
-    height,
-    fill,
-    PI,
-    ellipse,
-    TWO_PI,
-    HSB,
-  } = p5;
 
   p5.setup = () => {
-    createCanvas(800, 600);
-    colorMode(HSB, 100);
+    p5.createCanvas(800, 600);
+    p5.colorMode(p5.HSB, 100);
 
     for (var i = 0; i < numParticles; i++) {
       particles.push({
-        x: random(0, width),
-        y: random(0, height),
-        heading: random(0, TWO_PI),
-        radius: random(5, 10),
-        color: color(random(70, 90), 100, 100),
+        x: p5.random(0, p5.width),
+        y: p5.random(0, p5.height),
+        heading: p5.random(0, p5.TWO_PI),
+        radius: p5.random(5, 10),
+        color: p5.color(p5.random(70, 90), 100, 100),
       });
     }
 
-    var start = millis();
+    var start = p5.millis();
     for (let i = 0; i < iterations; i++) {
       p5.draw();
     }
-    var elapsed = millis() - start;
+    var elapsed = p5.millis() - start;
     console.log(
       'Drawing ' + iterations + 'x times took: ' + elapsed.toFixed(2) + 'ms.'
     );
@@ -64,27 +47,27 @@ function sketch(p5) {
 
   p5.draw = function draw() {
     // Clear with an alpha for trail effect
-    background(0, 20);
+    p5.background(0, 20);
 
     for (var i = 0; i < particles.length; i++) {
       var particle = particles[i];
 
-      // Randomly adjust the heading
-      particle.heading += random(-PI / 12, PI / 12);
+      // p5.randomly adjust the heading
+      particle.heading += p5.random(-p5.PI / 12, p5.PI / 12);
 
       // Move the particle
-      particle.x += 5 * cos(particle.heading);
-      particle.y += 5 * sin(particle.heading);
+      particle.x += 5 * p5.cos(particle.heading);
+      particle.y += 5 * p5.sin(particle.heading);
 
       // Wrap particles around the edges of the screen
-      if (particle.x > width) particle.x = particle.x - width;
-      else if (particle.x < 0) particle.x = width + particle.x;
-      if (particle.y > height) particle.y = particle.y - height;
-      else if (particle.y < 0) particle.y = height + particle.y;
+      if (particle.x > p5.width) particle.x = particle.x - p5.width;
+      else if (particle.x < 0) particle.x = p5.width + particle.x;
+      if (particle.y > p5.height) particle.y = particle.y - p5.height;
+      else if (particle.y < 0) particle.y = p5.height + particle.y;
 
       // Draw particle
-      fill(particle.color);
-      ellipse(particle.x, particle.y, particle.radius, particle.radius);
+      p5.fill(particle.color);
+      p5.ellipse(particle.x, particle.y, particle.radius, particle.radius);
     }
   };
 }

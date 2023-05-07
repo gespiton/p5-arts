@@ -32,7 +32,6 @@ export class Oscillator {
     // Oscillating on the y-axis
     let y = this.p.sin(this.angle.y) * this.amplitude.y;
 
-    console.log(x);
     this.p.push();
     this.p.translate(this.width / 2, this.height / 2);
     this.p.stroke(0);
