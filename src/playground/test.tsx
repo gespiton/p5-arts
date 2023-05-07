@@ -1,10 +1,10 @@
 import { P5Frame } from '../foundation/P5Frame';
-import sketch from './sketches/particlePerformanceTest';
+import caos from './sketches/caos'
 
 const MainPage = () => {
   return (
     <div>
-      <P5Frame sketch={sketch} />
+      <P5Frame sketch={caos} />
     </div>
   );
 };

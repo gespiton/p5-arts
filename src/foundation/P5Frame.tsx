@@ -7,9 +7,13 @@ function P5Frame(props: { sketch: (p: p5) => void }) {
   const canvasNode = canvasRef.current;
   const { sketch } = props;
   useEffect(() => {
+    let pInstance: p5;
     if (canvasNode) {
-      new p5(sketch, canvasNode);
+      pInstance = new p5(sketch, canvasNode);
     }
+    return () => {
+      pInstance?.remove();
+    };
   }, [canvasNode, sketch]);
   return <div ref={canvasRef} />;
 }
