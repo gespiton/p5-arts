@@ -1,4 +1,4 @@
-import { Emitter } from '../../foundation/particleSystem/emitter';
+import { Emitter } from '../../foundation/particleSystem/fire/emitter';
 import p5 from 'p5';
 
 function caos(p5: p5) {

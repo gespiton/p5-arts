@@ -1,21 +1,25 @@
-import React from "react";
-import p5 from "p5";
-import { P5Frame } from "../../foundation/P5Frame";
-import { FlowFields } from "../../foundation/FlowFields/FlowFields";
+import React from 'react';
+import p5 from 'p5';
+import { P5Frame } from '../../foundation/P5Frame';
+import { FlowFields } from '../../foundation/FlowFields/FlowFields';
+import { Emitter } from '../../foundation/particleSystem/fire/emitter';
 
 function distortedSpiritSketch(p: p5) {
-  const col = 30;
+  const col = 50;
   const row = 30;
   const canvasWidth = 800;
   const canvasHeight = 600;
-  const flowFields = new FlowFields(p, col, row, 0.03);
+  const flowFields = new FlowFields(p, col, row, 0.01);
+  const emitter = new Emitter(200, 375, p);
   p.setup = function () {
     p.frameRate(30);
     p.createCanvas(canvasWidth, canvasHeight);
   };
 
   p.draw = function () {
-    p.background(255);
+    p.clear(0, 0, 0, 0);
+    p.background(0);
+    p.blendMode(p.ADD);
     const rowStep = canvasHeight / row;
     const colStep = canvasWidth / col;
     for (let i = 0; i < row; i++) {
@@ -24,7 +28,7 @@ function distortedSpiritSketch(p: p5) {
         const yStart = i * rowStep + rowStep / 2;
         const force = flowFields.getFlow(j, i);
         const angle = p.atan2(force.y, force.x);
-        p.stroke(0);
+        p.stroke(255,0.2);
         p.push();
         p.translate(xStart, yStart);
         p.rotate(angle);
@@ -32,6 +36,14 @@ function distortedSpiritSketch(p: p5) {
         p.pop();
       }
     }
+
+    // update fire
+    emitter.applyForceField(flowFields);
+    emitter.emit(1);
+    emitter.show();
+    emitter.update();
+
+    // update flow fields
     flowFields.updateFlow();
   };
 }
