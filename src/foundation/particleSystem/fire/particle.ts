@@ -6,7 +6,7 @@
 
 import p5 from 'p5';
 import image from './texture32.png';
-import { PerlinNoise } from '../utils/PerlinNoise';
+import { PerlinNoise } from '../../utils/PerlinNoise';
 
 // Texture Maker: https://editor.p5js.org/codingtrain/sketches/NS4rB1Yx-
 // Image Texture: https://editor.p5js.org/codingtrain/sketches/TTVoNt58T
