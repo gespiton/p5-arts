@@ -116,6 +116,7 @@ export class Emitter {
 
   show() {
     this.particles.forEach((particle) => {
+      particle.update();
       particle.show();
     });
   }
