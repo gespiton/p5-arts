@@ -29,8 +29,16 @@ export class FlowFields {
   }
 
   getFlowAtPixel(x: number, y: number): Vector | undefined {
-    const col = Math.floor(x / this.cols);
-    const row = Math.floor(y / this.rows);
+    const col = this.p.constrain(
+      Math.floor(x / (this.p.width / this.cols)),
+      0,
+      this.cols - 1
+    );
+    const row = this.p.constrain(
+      Math.floor(y / (this.p.height / this.rows)),
+      0,
+      this.rows - 1
+    );
     return this.getFlow(col, row);
   }
 

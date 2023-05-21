@@ -5,8 +5,8 @@ import { FlowFields } from '../../foundation/FlowFields/FlowFields';
 import { Emitter } from '../../foundation/particleSystem/fire/emitter';
 
 function distortedSpiritSketch(p: p5) {
-  const col = 50;
-  const row = 30;
+  const col = 10;
+  const row = 10;
   const canvasWidth = 800;
   const canvasHeight = 600;
   const flowFields = new FlowFields(p, col, row, 0.01);
@@ -20,22 +20,24 @@ function distortedSpiritSketch(p: p5) {
     p.clear(0, 0, 0, 0);
     p.background(0);
     p.blendMode(p.ADD);
-    const rowStep = canvasHeight / row;
-    const colStep = canvasWidth / col;
-    for (let i = 0; i < row; i++) {
-      for (let j = 0; j < col; j++) {
-        const xStart = j * colStep + colStep / 2;
-        const yStart = i * rowStep + rowStep / 2;
-        const force = flowFields.getFlow(j, i);
-        const angle = p.atan2(force.y, force.x);
-        p.stroke(255,0.2);
-        p.push();
-        p.translate(xStart, yStart);
-        p.rotate(angle);
-        p.line(0, 0, 10, 0);
-        p.pop();
-      }
-    }
+
+    // draw force field
+    // const rowStep = canvasHeight / row;
+    // const colStep = canvasWidth / col;
+    // for (let i = 0; i < row; i++) {
+    //   for (let j = 0; j < col; j++) {
+    //     const xStart = j * colStep + colStep / 2;
+    //     const yStart = i * rowStep + rowStep / 2;
+    //     const force = flowFields.getFlow(j, i);
+    //     const angle = p.atan2(force.y, force.x);
+    //     p.stroke(255);
+    //     p.push();
+    //     p.translate(xStart, yStart);
+    //     p.rotate(angle);
+    //     p.line(0, 0, 20, 0);
+    //     p.pop();
+    //   }
+    // }
 
     // update fire
     emitter.applyForceField(flowFields);

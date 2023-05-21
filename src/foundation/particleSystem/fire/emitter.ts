@@ -49,10 +49,9 @@ export class Emitter {
     // move center
     const force = flowFields
       .getFlowAtPixel(this.position.x, this.position.y)
-      ?.setMag(2);
+      ?.setMag(10);
     if (force) {
       this.position.add(force);
-      this.checkEdge();
     }
   }
 
@@ -81,6 +80,7 @@ export class Emitter {
         this.particles.splice(i, 1);
       }
     }
+    this.checkEdge();
   }
 
   show() {
