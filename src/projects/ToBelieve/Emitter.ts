@@ -1,9 +1,9 @@
 import p5 from 'p5';
-import imgName from './source.png';
+import imgName from './source2.png';
 import { Particle } from './Particle';
 import transparentCircle from '../../resources/transparentCircle.png';
 
-const IMG_RESIZED_WIDTH = 600;
+const IMG_RESIZED_WIDTH = 1000;
 const IMG_SCAN_STEPS = 1;
 const SPIN_MULTIPLIER = 45;
 const MIN_PARTICLE_COUNT = 200;
@@ -54,20 +54,12 @@ export class Emitter {
           const darkness =
             1 - ((r + g + b) * this.p.map(a, 1, 255, 0, 1)) / 3 / 255;
           // if the pixel is not black enough, then skip it
-          if (darkness < 0.1) continue;
+          if (darkness < 0.05) continue;
           // if the pixel is black enough, then push the index into the indices array
           this.indices.push(index);
-
-          // if (a > 20) {
-
-          // let a = img.pixels[index + 3];
-          // if (a > 20) {
-          //   this.indices.push(index);
-          // } else {
-          //   console.log('skip', a);
-          // }
         }
       }
+      console.log('indices', this.indices.length);
 
       this.spawnParticles();
     });
@@ -84,11 +76,6 @@ export class Emitter {
       1
     );
     // convert step to integer
-
-    console.log(
-      '🚀 ~ file: Emitter.ts:78 ~ spawnParticles ~ this.indices.length:',
-      this.indices.length
-    );
     for (let i = 0; i < this.indices.length; i += step) {
       let index = this.indices[i];
 
@@ -99,14 +86,20 @@ export class Emitter {
       let g = img.pixels[index + 1];
       let b = img.pixels[index + 2];
       let a = img.pixels[index + 3];
+      const transparancy = this.p.map(
+        1 - ((r + g + b) * this.p.map(a, 1, 255, 0, 1)) / 3 / 255,
+        0,
+        1,
+        0,
+        220
+      );
 
       const newParticle = new Particle({
         x,
         y,
         p5: this.p,
         radius: 5,
-        color: this.p.color(r, g, b, a),
-        // img: this.circleImg,
+        color: this.p.color(0, 0, 0, transparancy),
       });
       this.particles.push(newParticle);
     }

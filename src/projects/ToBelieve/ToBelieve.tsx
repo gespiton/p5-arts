@@ -6,15 +6,16 @@ import { Emitter } from './Emitter';
 function toBelieveSketch(p: p5) {
   let emitter: Emitter;
   p.setup = () => {
-    p.createCanvas(p.windowWidth, p.windowHeight);
+    p.createCanvas(p.windowWidth, p.windowHeight * 2);
     p.background(0);
-    emitter = new Emitter(p, 3000);
+    p.noStroke();
+    emitter = new Emitter(p, 50000);
   };
 
   p.draw = () => {
     p.background(255);
     emitter.show();
-    console.log(p.frameRate());
+    // console.log(p.frameRate());
   };
 }
 
