@@ -5,15 +5,6 @@ import transparentCircle from '../../resources/transparentCircle.png';
 
 const IMG_RESIZED_WIDTH = 1000;
 const IMG_SCAN_STEPS = 1;
-const SPIN_MULTIPLIER = 45;
-const MIN_PARTICLE_COUNT = 200;
-const MAX_PARTICLE_COUNT = 700;
-const MIN_PARTICLE_SIZE = 12;
-const MAX_PARTICLE_SIZE = 50;
-const MIN_FORCE = 0.4;
-const MAX_FORCE = 0.6;
-const REPULSION_RADIUS = 100;
-const REPULSION_STRENGTH = 0.25;
 
 export class Emitter {
   p: p5;
