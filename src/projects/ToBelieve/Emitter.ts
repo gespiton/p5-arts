@@ -3,7 +3,7 @@ import imgName from './source2.png';
 import { Particle } from './Particle';
 import transparentCircle from '../../resources/transparentCircle.png';
 
-const IMG_RESIZED_WIDTH = 1000;
+// const IMG_RESIZED_WIDTH = 1000;
 const IMG_SCAN_STEPS = 1;
 
 export class Emitter {
@@ -41,7 +41,7 @@ export class Emitter {
           const g = img.pixels[index + 1];
           const b = img.pixels[index + 2];
           const a = img.pixels[index + 3];
-          // calculate the blakness of the pixel in index using r g b a value
+          // calculate the blackness of the pixel in index using r g b a value
           const darkness =
             1 - ((r + g + b) * this.p.map(a, 1, 255, 0, 1)) / 3 / 255;
           // if the pixel is not black enough, then skip it

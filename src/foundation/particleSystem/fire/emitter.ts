@@ -4,7 +4,7 @@
 // https://youtu.be/pUhv2CA0omA
 // https://thecodingtrain.com/learning/nature-of-code/4.4-image-textures.html
 
-import p5, { Vector } from 'p5';
+import p5 from 'p5';
 import { Particle } from './particle';
 import { FlowFields } from '../../FlowFields/FlowFields';
 
