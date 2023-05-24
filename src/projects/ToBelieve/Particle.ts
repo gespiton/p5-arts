@@ -1,16 +1,21 @@
 import {
   BaseParticle,
   BaseParticleConfig,
-} from '../../foundation/particleSystem/BaseParticle';
-import p5 from 'p5';
-import { NoiseLoop } from '../../foundation/utils/NoiseLoop';
+} from "../../foundation/particleSystem/BaseParticle";
+import { NoiseLoop } from "../../foundation/utils/NoiseLoop";
+
+type ParticleConfig = BaseParticleConfig & {
+  transparency: number;
+};
 
 export class Particle extends BaseParticle {
   xNoiseLoop: NoiseLoop;
   yNoiseLoop: NoiseLoop;
   radiusNoiseLoop: NoiseLoop;
-  constructor(props: BaseParticleConfig) {
+  transparency: number;
+  constructor(props: ParticleConfig) {
     super(props);
+    this.transparency = props.transparency;
     this.vel = this.p.createVector(
       this.p.random(-0.3, 0.3),
       this.p.random(-0.3, 0.3)
@@ -36,7 +41,7 @@ export class Particle extends BaseParticle {
       this.p,
       this.p.random(diameter),
       3,
-      11
+      10
     );
   }
 

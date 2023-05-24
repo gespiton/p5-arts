@@ -77,7 +77,7 @@ export class Emitter {
       let g = img.pixels[index + 1];
       let b = img.pixels[index + 2];
       let a = img.pixels[index + 3];
-      const transparancy = this.p.map(
+      const transparency = this.p.map(
         1 - ((r + g + b) * this.p.map(a, 1, 255, 0, 1)) / 3 / 255,
         0,
         1,
@@ -90,7 +90,8 @@ export class Emitter {
         y,
         p5: this.p,
         radius: 5,
-        color: this.p.color(0, 0, 0, transparancy),
+        color: this.p.color(0, 0, 0, transparency),
+        transparency
       });
       this.particles.push(newParticle);
     }
