@@ -1,4 +1,3 @@
-import React from 'react';
 import p5 from 'p5';
 import { P5Frame } from '../../foundation/P5Frame';
 import { Emitter } from './Emitter';
@@ -7,13 +6,13 @@ import { Emitter } from './Emitter';
 function toBelieveSketch(p: p5) {
   let emitter: Emitter;
   p.setup = () => {
-    const w = p.windowWidth;
-    p.createCanvas(w, w * 1.3);
+    const w = 800;
+    p.createCanvas(w, w * 1.6);
     // p.createCanvas(400, 400);
     p.background(0);
     p.noStroke();
     p.pixelDensity(1);
-    emitter = new Emitter(p, 50000);
+    emitter = new Emitter(p, 7000);
   };
 
   const render = () => {
@@ -35,7 +34,7 @@ function toBelieveSketch(p: p5) {
 
 const MainPage = () => {
   return (
-    <div>
+    <div id="test">
       <P5Frame sketch={toBelieveSketch} />
     </div>
   );

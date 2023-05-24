@@ -14,6 +14,7 @@ function distortedSpiritSketch(p: p5) {
   p.setup = function () {
     p.frameRate(30);
     p.createCanvas(canvasWidth, canvasHeight);
+    p.pixelDensity(1);
   };
 
   p.draw = function () {
