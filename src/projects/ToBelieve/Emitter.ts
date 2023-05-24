@@ -27,7 +27,7 @@ export class Emitter {
     this.p.loadImage(imgName, (newImg) => {
       this.img = newImg;
       this.img.loadPixels();
-      this.img.resize(IMG_RESIZED_WIDTH, 0);
+      this.img.resize(this.p.width, 0);
 
       // Collects valid positions where a particle can spawn onto.
       this.indices = [];

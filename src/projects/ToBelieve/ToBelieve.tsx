@@ -2,12 +2,13 @@ import React from 'react';
 import p5 from 'p5';
 import { P5Frame } from '../../foundation/P5Frame';
 import { Emitter } from './Emitter';
-import { createMotionBlurDrawFunction } from '../../foundation/motionBlurTemplates';
+// import { createMotionBlurDrawFunction } from '../../foundation/motionBlurTemplates';
 
 function toBelieveSketch(p: p5) {
   let emitter: Emitter;
   p.setup = () => {
-    p.createCanvas(1000, 1200);
+    const w = p.windowWidth;
+    p.createCanvas(w, w * 1.3);
     // p.createCanvas(400, 400);
     p.background(0);
     p.noStroke();
@@ -23,6 +24,13 @@ function toBelieveSketch(p: p5) {
 
   // p.draw = createMotionBlurDrawFunction(p, render);
   p.draw = render;
+
+  p.keyPressed = () => {
+    // this will download the first 5 seconds of the animation!
+    if (p.key === 's') {
+      p.saveGif('mySketch', 1, {});
+    }
+  };
 }
 
 const MainPage = () => {

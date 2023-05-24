@@ -21,7 +21,7 @@ export class Particle extends BaseParticle {
       this.p.random(-0.3, 0.3)
     );
 
-    const diameter = 3;
+    const diameter = 2;
     const offsetMax = 3;
     const offsetMin = -3;
     this.xNoiseLoop = new NoiseLoop(
@@ -57,7 +57,7 @@ export class Particle extends BaseParticle {
     // this.applyForce(force);
     // super.update();
     // this.lifetime -= 2;
-    const loopEvery = 300;
+    const loopEvery = 60;
     const percent = (this.p.frameCount % loopEvery) / loopEvery;
     const xNoise = this.xNoiseLoop.value(percent);
     const yNoise = this.yNoiseLoop.value(percent);
