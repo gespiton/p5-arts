@@ -21,9 +21,9 @@ export class Particle extends BaseParticle {
       this.p.random(-0.3, 0.3)
     );
 
-    const diameter = 3;
-    const offsetMax = 5;
-    const offsetMin = -5;
+    const diameter = 2;
+    const offsetMax = 3;
+    const offsetMin = -3;
     this.xNoiseLoop = new NoiseLoop(
       this.p,
       this.p.random(diameter),
