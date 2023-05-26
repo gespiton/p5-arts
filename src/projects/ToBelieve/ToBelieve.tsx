@@ -1,6 +1,7 @@
-import p5 from 'p5';
-import { P5Frame } from '../../foundation/P5Frame';
-import { Emitter } from './Emitter';
+import p5 from "p5";
+import { P5Frame } from "../../foundation/P5Frame";
+import { Emitter } from "./Emitter";
+import styled from "styled-components";
 // import { createMotionBlurDrawFunction } from '../../foundation/motionBlurTemplates';
 
 function toBelieveSketch(p: p5) {
@@ -26,17 +27,23 @@ function toBelieveSketch(p: p5) {
 
   p.keyPressed = () => {
     // this will download the first 5 seconds of the animation!
-    if (p.key === 's') {
-      p.saveGif('mySketch', 1, {});
+    if (p.key === "s") {
+      p.saveGif("mySketch", 1, {});
     }
   };
 }
 
+const Container = styled.div`
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+`;
+
 const MainPage = () => {
   return (
-    <div id="test">
+    <Container id="test">
       <P5Frame sketch={toBelieveSketch} />
-    </div>
+    </Container>
   );
 };
 
