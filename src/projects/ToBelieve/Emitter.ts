@@ -1,7 +1,8 @@
-import p5 from 'p5';
-import imgName from './source2.png';
-import { Particle } from './Particle';
-import transparentCircle from '../../resources/transparentCircle.png';
+import p5 from "p5";
+import imgName from "./source2.png";
+import { Particle } from "./Particle";
+import transparentCircle from "../../resources/transparentCircle.png";
+import { Mode } from "./constant";
 
 // const IMG_RESIZED_WIDTH = 1000;
 const IMG_SCAN_STEPS = 1;
@@ -50,7 +51,7 @@ export class Emitter {
           this.indices.push(index);
         }
       }
-      console.log('indices', this.indices.length);
+      console.log("indices", this.indices.length);
 
       this.spawnParticles();
     });
@@ -91,7 +92,7 @@ export class Emitter {
         p5: this.p,
         radius: 5,
         color: this.p.color(0, 0, 0, transparency),
-        transparency
+        transparency,
       });
       this.particles.push(newParticle);
     }
@@ -103,6 +104,12 @@ export class Emitter {
     this.particles.forEach((particle) => {
       particle.update();
       particle.show();
+    });
+  }
+
+  changeMode(mode: Mode) {
+    this.particles.forEach((particle) => {
+      particle.changeMode(mode);
     });
   }
 }
