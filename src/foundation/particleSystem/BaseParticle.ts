@@ -23,7 +23,6 @@ export class BaseParticle {
   lifetime: number;
   color?: p5.Color;
   img?: p5.Image;
-
   p: p5;
   constructor(config: BaseParticleConfig) {
     const {
