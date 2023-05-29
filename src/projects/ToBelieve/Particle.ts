@@ -1,9 +1,9 @@
 import {
   BaseParticle,
   BaseParticleConfig,
-} from "../../foundation/particleSystem/BaseParticle";
-import { NoiseLoop } from "../../foundation/utils/NoiseLoop";
-import { Mode } from "./constant";
+} from '../../foundation/particleSystem/BaseParticle';
+import { NoiseLoop } from '../../foundation/utils/NoiseLoop';
+import { Mode } from './constant';
 
 type ParticleConfig = BaseParticleConfig & {
   transparency: number;
@@ -48,7 +48,9 @@ export class Particle extends BaseParticle {
 
   changeMode(mode: Mode) {
     if (mode === Mode.WHITE_PAPER) {
-      this.color = this.p.color(200, 200, 200, this.transparency);
+      this.color = this.p.color(255, 255, 255, this.transparency);
+    } else if (mode === Mode.DAY_TIME) {
+      this.color = this.p.color(0, 0, 0, this.transparency);
     }
   }
 
