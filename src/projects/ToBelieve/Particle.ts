@@ -69,6 +69,8 @@ export class Particle extends BaseParticle {
       this.delayUntilFrame = this.p.frameCount + baseDelay;
       this.color = this.p.color(255, 255, 255, this.transparency);
     } else if (mode === Mode.DAY_TIME) {
+      const baseDelay = this.p.map(this.id, 0, PARTICLE_COUNT, 0, 200);
+      this.delayUntilFrame = this.p.frameCount + baseDelay;
       this.reachingDestination = false;
       this.resetNoise(2, 3);
       this.vel = this.p.createVector(0, 0);
@@ -106,11 +108,14 @@ export class Particle extends BaseParticle {
       const dragForce = this.vel.copy().mult(-0.1);
       this.applyForce(dragForce);
       super.update();
-      this.pos = this.pos.add(xNoise, yNoise);
-      this.r = this.radiusNoiseLoop.value(percent);
+      // this.pos = this.pos.add(xNoise, yNoise);
+      // this.r = this.radiusNoiseLoop.value(percent);
       const currentSpeed = this.vel.mag();
       if (currentSpeed < 0.1) {
         this.reachingDestination = true;
+        console.count(
+          "🚀 ~ file: Particle.ts:114 ~ Particle ~ update ~ this.reachingDestination:"
+        );
       }
     } else {
       this.pos = this.origin.copy().add(xNoise, yNoise);
