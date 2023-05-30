@@ -21,6 +21,7 @@ function P5Frame(props: { sketch: (p: p5) => void }) {
           const scaleFactor = canvasContainerNode.clientWidth / canvas.width;
           canvas.style.transform = `scale(${scaleFactor})`;
           canvas.style.transformOrigin = '0 0';
+          canvasContainerNode.style.height = `${canvas.height * scaleFactor}px`;
         }
       }, 1000);
     }

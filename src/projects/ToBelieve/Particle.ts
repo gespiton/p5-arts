@@ -59,10 +59,10 @@ export class Particle extends BaseParticle {
   changeMode(mode: Mode) {
     this.currentMode = mode;
     if (mode === Mode.WHITE_PAPER) {
-      this.resetNoise(2, 5);
+      // this.resetNoise(2, 5);
       this.delay = this.p.random(
-        this.p.frameCount + 150,
-        this.p.frameCount + 400
+        this.p.frameCount + 50,
+        this.p.frameCount + 100
       );
       this.color = this.p.color(255, 255, 255, this.transparency);
     } else if (mode === Mode.DAY_TIME) {
