@@ -35,9 +35,17 @@ const App = () => {
 const StyledButton = styled(Button)`
   padding: 20px;
   background-color: transparent;
-  position: fixed;
   z-index: 100;
-  color: transparent;
+  color: transparent !important;
+  > * {
+    color: transparent;
+  }
+`;
+const StyledNav = styled.nav`
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 `;
 
 const Navbar = () => {
@@ -56,7 +64,7 @@ const Navbar = () => {
       setOpen(open);
     };
   return (
-    <nav>
+    <StyledNav>
       <React.Fragment key={anchor}>
         <StyledButton size="large" onClick={toggleDrawer(true)}>
           {/* <svg
@@ -99,7 +107,7 @@ const Navbar = () => {
           </List>
         </SwipeableDrawer>
       </React.Fragment>
-    </nav>
+    </StyledNav>
   );
 };
 
