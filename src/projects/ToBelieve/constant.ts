@@ -3,3 +3,5 @@ export enum Mode {
   DAY_TIME = "DAY_TIME",
   RED_TERROR = "RED_TERROR",
 }
+
+export const PARTICLE_COUNT = 6000;

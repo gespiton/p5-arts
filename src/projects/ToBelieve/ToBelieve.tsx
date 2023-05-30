@@ -1,8 +1,8 @@
-import p5 from 'p5';
-import { P5Frame } from '../../foundation/P5Frame';
-import { Emitter } from './Emitter';
-import styled from 'styled-components';
-import { Mode } from './constant';
+import p5 from "p5";
+import { P5Frame } from "../../foundation/P5Frame";
+import { Emitter } from "./Emitter";
+import styled from "styled-components";
+import { Mode, PARTICLE_COUNT } from "./constant";
 // import { createMotionBlurDrawFunction } from '../../foundation/motionBlurTemplates';
 
 function toBelieveSketch(p: p5) {
@@ -14,7 +14,7 @@ function toBelieveSketch(p: p5) {
     p.background(0);
     p.noStroke();
     p.pixelDensity(1);
-    emitter = new Emitter(p, 7000);
+    emitter = new Emitter(p, PARTICLE_COUNT);
   };
 
   const modes = [Mode.DAY_TIME, Mode.WHITE_PAPER];
@@ -39,8 +39,8 @@ function toBelieveSketch(p: p5) {
 
   p.keyPressed = () => {
     // this will download the first 5 seconds of the animation!
-    if (p.key === 's') {
-      p.saveGif('mySketch', 1, {});
+    if (p.key === "s") {
+      p.saveGif("mySketch", 1, {});
     }
   };
 }

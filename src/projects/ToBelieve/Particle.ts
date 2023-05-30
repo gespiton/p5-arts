@@ -1,14 +1,15 @@
-import p5 from 'p5';
+import p5 from "p5";
 import {
   BaseParticle,
   BaseParticleConfig,
-} from '../../foundation/particleSystem/BaseParticle';
-import { NoiseLoop } from '../../foundation/utils/NoiseLoop';
-import { Mode } from './constant';
+} from "../../foundation/particleSystem/BaseParticle";
+import { NoiseLoop } from "../../foundation/utils/NoiseLoop";
+import { Mode, PARTICLE_COUNT } from "./constant";
 
 type ParticleConfig = BaseParticleConfig & {
   transparency: number;
   whitePaperPointLocation: p5.Vector;
+  id: number;
 };
 
 export class Particle extends BaseParticle {
@@ -17,6 +18,7 @@ export class Particle extends BaseParticle {
   radiusNoiseLoop: NoiseLoop = new NoiseLoop(this.p, 0, 0, 0);
   transparency: number;
   whitePaperPointLocation: p5.Vector;
+  id: number;
 
   constructor(props: ParticleConfig) {
     super(props);
@@ -29,6 +31,7 @@ export class Particle extends BaseParticle {
     this.resetNoise(2, 3);
 
     this.whitePaperPointLocation = props.whitePaperPointLocation;
+    this.id = props.id;
   }
 
   resetNoise(diameter: number, offset: number) {
@@ -55,15 +58,13 @@ export class Particle extends BaseParticle {
   }
 
   currentMode: Mode = Mode.DAY_TIME;
-  delay: number = 0;
+  delayUntilFrame: number = 0;
   changeMode(mode: Mode) {
     this.currentMode = mode;
     if (mode === Mode.WHITE_PAPER) {
       // this.resetNoise(2, 5);
-      this.delay = this.p.random(
-        this.p.frameCount + 50,
-        this.p.frameCount + 100
-      );
+      const baseDelay = this.p.map(this.id, 0, PARTICLE_COUNT, 0, 200);
+      this.delayUntilFrame = this.p.frameCount + baseDelay;
       this.color = this.p.color(255, 255, 255, this.transparency);
     } else if (mode === Mode.DAY_TIME) {
       this.resetNoise(2, 3);
@@ -78,17 +79,18 @@ export class Particle extends BaseParticle {
     const xNoise = this.xNoiseLoop.value(percent);
     const yNoise = this.yNoiseLoop.value(percent);
 
-    const pastDelay = this.p.frameCount > this.delay;
+    const pastDelay = this.p.frameCount > this.delayUntilFrame;
     if (pastDelay && this.currentMode === Mode.WHITE_PAPER) {
       const force = this.whitePaperPointLocation
         .copy()
         .sub(this.pos)
-        .mult(0.0015);
+        .mult(0.0035);
       this.applyForce(force);
-      const dragForce = this.vel.copy().mult(-0.1);
+      const dragForce = this.vel.copy().mult(-0.05);
       this.applyForce(dragForce);
       super.update();
       this.pos = this.pos.add(xNoise, yNoise);
+      this.r = this.radiusNoiseLoop.value(percent);
     } else {
       this.pos = this.origin.copy().add(xNoise, yNoise);
       this.r = this.radiusNoiseLoop.value(percent);
@@ -105,4 +107,6 @@ export class Particle extends BaseParticle {
     // super.update();
     // this.lifetime -= 2;
   }
+
+  moveToDestination() {}
 }

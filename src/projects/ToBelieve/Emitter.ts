@@ -35,8 +35,8 @@ export class Emitter {
       if (this.img === undefined) return;
       const img = this.img;
 
-      for (let x = 0; x < img.width; x += IMG_SCAN_STEPS * 4) {
-        for (let y = 0; y < img.height; y += IMG_SCAN_STEPS * 4) {
+      for (let y = 0; y < img.height; y += IMG_SCAN_STEPS * 4) {
+        for (let x = 0; x < img.width; x += IMG_SCAN_STEPS * 4) {
           let index = (x + y * img.width) * 4;
           const r = img.pixels[index];
           const g = img.pixels[index + 1];
@@ -51,7 +51,6 @@ export class Emitter {
           this.indices.push(index);
         }
       }
-      console.log("indices", this.indices.length);
 
       this.spawnParticles();
     });
@@ -104,6 +103,7 @@ export class Emitter {
       );
 
       const newParticle = new Particle({
+        id: i / step,
         x,
         y,
         p5: this.p,
