@@ -1,10 +1,14 @@
-import p5 from "p5";
+import p5 from 'p5';
 import {
   BaseParticle,
   BaseParticleConfig,
-} from "../../foundation/particleSystem/BaseParticle";
-import { NoiseLoop } from "../../foundation/utils/NoiseLoop";
-import { Mode, PARTICLE_COUNT } from "./constant";
+} from '../../foundation/particleSystem/BaseParticle';
+import { NoiseLoop } from '../../foundation/utils/NoiseLoop';
+import {
+  DAY_TO_NIGHT_TRANSITION_DURATION,
+  Mode,
+  PARTICLE_COUNT,
+} from './constant';
 
 type ParticleConfig = BaseParticleConfig & {
   transparency: number;
@@ -65,7 +69,14 @@ export class Particle extends BaseParticle {
     this.currentMode = mode;
     if (mode === Mode.WHITE_PAPER) {
       // this.resetNoise(2, 5);
-      const baseDelay = this.p.map(this.id, 0, PARTICLE_COUNT, 0, 200);
+      const baseDelay =
+        this.p.map(
+          this.id,
+          0,
+          PARTICLE_COUNT,
+          0,
+          DAY_TO_NIGHT_TRANSITION_DURATION
+        ) + this.p.random(0, 20);
       this.delayUntilFrame = this.p.frameCount + baseDelay;
       this.color = this.p.color(255, 255, 255, this.transparency);
     } else if (mode === Mode.DAY_TIME) {
@@ -93,7 +104,7 @@ export class Particle extends BaseParticle {
         .sub(this.pos)
         .mult(0.0035);
       this.applyForce(force);
-      const dragForce = this.vel.copy().mult(-0.05);
+      const dragForce = this.vel.copy().mult(-0.02);
       this.applyForce(dragForce);
       super.update();
       this.pos = this.pos.add(xNoise, yNoise);
@@ -114,7 +125,7 @@ export class Particle extends BaseParticle {
       if (currentSpeed < 0.1) {
         this.reachingDestination = true;
         console.count(
-          "🚀 ~ file: Particle.ts:114 ~ Particle ~ update ~ this.reachingDestination:"
+          '🚀 ~ file: Particle.ts:114 ~ Particle ~ update ~ this.reachingDestination:'
         );
       }
     } else {

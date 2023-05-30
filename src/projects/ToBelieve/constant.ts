@@ -5,3 +5,4 @@ export enum Mode {
 }
 
 export const PARTICLE_COUNT = 6000;
+export const DAY_TO_NIGHT_TRANSITION_DURATION = 50;
