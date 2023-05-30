@@ -59,6 +59,8 @@ export class Particle extends BaseParticle {
 
   currentMode: Mode = Mode.DAY_TIME;
   delayUntilFrame: number = 0;
+  transitionUntilFrame: number = 0;
+  reachingDestination = true;
   changeMode(mode: Mode) {
     this.currentMode = mode;
     if (mode === Mode.WHITE_PAPER) {
@@ -67,9 +69,11 @@ export class Particle extends BaseParticle {
       this.delayUntilFrame = this.p.frameCount + baseDelay;
       this.color = this.p.color(255, 255, 255, this.transparency);
     } else if (mode === Mode.DAY_TIME) {
+      this.reachingDestination = false;
       this.resetNoise(2, 3);
       this.vel = this.p.createVector(0, 0);
       this.color = this.p.color(0, 0, 0, this.transparency);
+      this.transitionUntilFrame = this.p.frameCount + 300;
     }
   }
 
@@ -80,6 +84,7 @@ export class Particle extends BaseParticle {
     const yNoise = this.yNoiseLoop.value(percent);
 
     const pastDelay = this.p.frameCount > this.delayUntilFrame;
+    const inTransition = this.p.frameCount < this.transitionUntilFrame;
     if (pastDelay && this.currentMode === Mode.WHITE_PAPER) {
       const force = this.whitePaperPointLocation
         .copy()
@@ -91,6 +96,22 @@ export class Particle extends BaseParticle {
       super.update();
       this.pos = this.pos.add(xNoise, yNoise);
       this.r = this.radiusNoiseLoop.value(percent);
+    } else if (
+      inTransition &&
+      this.currentMode === Mode.DAY_TIME &&
+      !this.reachingDestination
+    ) {
+      const force = this.origin.copy().sub(this.pos).mult(0.0035);
+      this.applyForce(force);
+      const dragForce = this.vel.copy().mult(-0.1);
+      this.applyForce(dragForce);
+      super.update();
+      this.pos = this.pos.add(xNoise, yNoise);
+      this.r = this.radiusNoiseLoop.value(percent);
+      const currentSpeed = this.vel.mag();
+      if (currentSpeed < 0.1) {
+        this.reachingDestination = true;
+      }
     } else {
       this.pos = this.origin.copy().add(xNoise, yNoise);
       this.r = this.radiusNoiseLoop.value(percent);
