@@ -1,8 +1,8 @@
-import p5 from 'p5';
-import imgName from './source2.png';
-import { Particle } from './Particle';
-import transparentCircle from '../../resources/transparentCircle.png';
-import { Mode } from './constant';
+import p5 from "p5";
+import imgName from "./source2.png";
+import { Particle } from "./Particle";
+import transparentCircle from "../../resources/transparentCircle.png";
+import { Mode } from "./constant";
 
 // const IMG_RESIZED_WIDTH = 1000;
 const IMG_SCAN_STEPS = 1;
@@ -51,7 +51,7 @@ export class Emitter {
           this.indices.push(index);
         }
       }
-      console.log('indices', this.indices.length);
+      console.log("indices", this.indices.length);
 
       this.spawnParticles();
     });
@@ -69,14 +69,14 @@ export class Emitter {
     );
 
     // calculate the points count of the white paper
-    const paperWidth = this.p.width * 0.7;
-    const paperHeight = paperWidth * 0.5;
+    const paperWidth = this.p.width * 0.8;
+    const paperHeight = paperWidth * 0.7;
     const startPointX = this.p.width / 2 - paperWidth / 2;
     const startPointY = this.p.height / 2 - paperHeight / 2;
     const getPointLocationAtPercentage = (percentage: number) => {
       const pIndex = Math.floor(paperWidth * paperHeight * percentage);
-      const x = (pIndex % paperWidth) + startPointX;
-      const y = Math.floor(pIndex / paperWidth) + startPointY;
+      const x = Math.floor(pIndex / paperHeight) + startPointX;
+      const y = Math.floor(pIndex % paperHeight) + startPointY;
       return this.p.createVector(x, y);
     };
 
@@ -100,7 +100,7 @@ export class Emitter {
       );
 
       const whitePaperPointLocation = getPointLocationAtPercentage(
-        i / step / this.particleCount
+        i / this.indices.length
       );
 
       const newParticle = new Particle({
