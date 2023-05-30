@@ -5,6 +5,7 @@ import {
 } from '../../foundation/particleSystem/BaseParticle';
 import { NoiseLoop } from '../../foundation/utils/NoiseLoop';
 import {
+  DAY_TO_NIGHT_TRANSITION_DELAY,
   DAY_TO_NIGHT_TRANSITION_DURATION,
   Mode,
   PARTICLE_COUNT,
@@ -68,6 +69,8 @@ export class Particle extends BaseParticle {
   changeMode(mode: Mode) {
     this.currentMode = mode;
     if (mode === Mode.WHITE_PAPER) {
+      this.transitionUntilFrame =
+        this.p.frameCount + DAY_TO_NIGHT_TRANSITION_DURATION;
       // this.resetNoise(2, 5);
       const baseDelay =
         this.p.map(
@@ -75,7 +78,7 @@ export class Particle extends BaseParticle {
           0,
           PARTICLE_COUNT,
           0,
-          DAY_TO_NIGHT_TRANSITION_DURATION
+          DAY_TO_NIGHT_TRANSITION_DELAY
         ) + this.p.random(0, 20);
       this.delayUntilFrame = this.p.frameCount + baseDelay;
       this.color = this.p.color(255, 255, 255, this.transparency);
@@ -98,17 +101,20 @@ export class Particle extends BaseParticle {
 
     const pastDelay = this.p.frameCount > this.delayUntilFrame;
     const inTransition = this.p.frameCount < this.transitionUntilFrame;
-    if (pastDelay && this.currentMode === Mode.WHITE_PAPER) {
-      const force = this.whitePaperPointLocation
-        .copy()
-        .sub(this.pos)
-        .mult(0.0035);
-      this.applyForce(force);
-      const dragForce = this.vel.copy().mult(-0.02);
-      this.applyForce(dragForce);
-      super.update();
-      this.pos = this.pos.add(xNoise, yNoise);
-      this.r = this.radiusNoiseLoop.value(percent);
+    if (inTransition && this.currentMode === Mode.WHITE_PAPER) {
+      if (pastDelay) {
+        const forceMultiplier = this.p.random(0.002, 0.008);
+        const force = this.whitePaperPointLocation
+          .copy()
+          .sub(this.pos)
+          .mult(forceMultiplier);
+        this.applyForce(force);
+        const dragForce = this.vel.copy().mult(-0.02);
+        this.applyForce(dragForce);
+        super.update();
+        this.pos = this.pos.add(xNoise, yNoise);
+        this.r = this.radiusNoiseLoop.value(percent);
+      }
     } else if (
       inTransition &&
       this.currentMode === Mode.DAY_TIME &&
@@ -124,9 +130,6 @@ export class Particle extends BaseParticle {
       const currentSpeed = this.vel.mag();
       if (currentSpeed < 0.1) {
         this.reachingDestination = true;
-        console.count(
-          '🚀 ~ file: Particle.ts:114 ~ Particle ~ update ~ this.reachingDestination:'
-        );
       }
     } else {
       this.pos = this.origin.copy().add(xNoise, yNoise);
