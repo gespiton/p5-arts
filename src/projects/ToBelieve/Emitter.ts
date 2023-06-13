@@ -74,8 +74,8 @@ export class Emitter {
     const startPointY = this.p.height / 2 - paperHeight / 2;
     const getPointLocationAtPercentage = (percentage: number) => {
       const pIndex = Math.floor(paperWidth * paperHeight * percentage);
-      const x = Math.floor(pIndex / paperHeight) + startPointX;
-      const y = Math.floor(pIndex % paperHeight) + startPointY;
+      const x = Math.floor(pIndex % paperWidth) + startPointX;
+      const y = Math.floor(pIndex / paperWidth) + startPointY;
       return this.p.createVector(x, y);
     };
 

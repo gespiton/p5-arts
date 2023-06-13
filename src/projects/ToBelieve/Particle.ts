@@ -1,15 +1,15 @@
-import p5 from 'p5';
+import p5 from "p5";
 import {
   BaseParticle,
   BaseParticleConfig,
-} from '../../foundation/particleSystem/BaseParticle';
-import { NoiseLoop } from '../../foundation/utils/NoiseLoop';
+} from "../../foundation/particleSystem/BaseParticle";
+import { NoiseLoop } from "../../foundation/utils/NoiseLoop";
 import {
   DAY_TO_NIGHT_TRANSITION_DELAY,
   DAY_TO_NIGHT_TRANSITION_DURATION,
   Mode,
   PARTICLE_COUNT,
-} from './constant';
+} from "./constant";
 
 type ParticleConfig = BaseParticleConfig & {
   transparency: number;
@@ -82,6 +82,14 @@ export class Particle extends BaseParticle {
         ) + this.p.random(0, 20);
       this.delayUntilFrame = this.p.frameCount + baseDelay;
       this.color = this.p.color(255, 255, 255, this.transparency);
+      const forceToDestination = this.whitePaperPointLocation
+        .copy()
+        .sub(this.pos)
+        .normalize();
+      // calculate a velocity perpendicular to the forceToDestination
+      this.vel = this.p
+        .createVector(forceToDestination.y, -forceToDestination.x)
+        .mult(30);
     } else if (mode === Mode.DAY_TIME) {
       const baseDelay = this.p.map(this.id, 0, PARTICLE_COUNT, 0, 200);
       this.delayUntilFrame = this.p.frameCount + baseDelay;
@@ -120,9 +128,9 @@ export class Particle extends BaseParticle {
       this.currentMode === Mode.DAY_TIME &&
       !this.reachingDestination
     ) {
-      const force = this.origin.copy().sub(this.pos).mult(0.0035);
+      const force = this.origin.copy().sub(this.pos).mult(0.35);
       this.applyForce(force);
-      const dragForce = this.vel.copy().mult(-0.1);
+      const dragForce = this.vel.copy().mult(-0.5);
       this.applyForce(dragForce);
       super.update();
       // this.pos = this.pos.add(xNoise, yNoise);
