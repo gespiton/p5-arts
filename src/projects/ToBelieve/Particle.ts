@@ -84,12 +84,11 @@ export class Particle extends BaseParticle {
       this.color = this.p.color(255, 255, 255, this.transparency);
       const forceToDestination = this.whitePaperPointLocation
         .copy()
-        .sub(this.pos)
-        .normalize();
+        .sub(this.pos);
       // calculate a velocity perpendicular to the forceToDestination
       this.vel = this.p
         .createVector(forceToDestination.y, -forceToDestination.x)
-        .mult(30);
+        .mult(0.2);
     } else if (mode === Mode.DAY_TIME) {
       const baseDelay = this.p.map(this.id, 0, PARTICLE_COUNT, 0, 200);
       this.delayUntilFrame = this.p.frameCount + baseDelay;
@@ -111,13 +110,13 @@ export class Particle extends BaseParticle {
     const inTransition = this.p.frameCount < this.transitionUntilFrame;
     if (inTransition && this.currentMode === Mode.WHITE_PAPER) {
       if (pastDelay) {
-        const forceMultiplier = this.p.random(0.002, 0.008);
+        const forceMultiplier = this.p.random(0.004, 0.04);
         const force = this.whitePaperPointLocation
           .copy()
           .sub(this.pos)
           .mult(forceMultiplier);
         this.applyForce(force);
-        const dragForce = this.vel.copy().mult(-0.02);
+        const dragForce = this.vel.copy().mult(-0.05);
         this.applyForce(dragForce);
         super.update();
         this.pos = this.pos.add(xNoise, yNoise);
