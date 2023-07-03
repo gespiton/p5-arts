@@ -1,4 +1,3 @@
-import React from 'react';
 import p5 from 'p5';
 import { P5Frame } from '../../foundation/P5Frame';
 import { FlowFields } from '../../foundation/FlowFields/FlowFields';

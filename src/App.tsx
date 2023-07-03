@@ -1,12 +1,13 @@
-import './App.css';
-import BreezeOfFreedom from './breeze-of-freedom/main';
-import { Route, Link, Routes, Outlet, BrowserRouter } from 'react-router-dom';
-import Test from './playground/test';
-import DistortedSpirit from './projects/DistortedSpirit/DistortedSpirit';
-import ToBelieve from './projects/ToBelieve/ToBelieve';
-import React, { useState } from 'react';
-import { Button, List, ListItem, SwipeableDrawer } from '@mui/material';
-import styled from 'styled-components';
+import "./App.css";
+import BreezeOfFreedom from "./breeze-of-freedom/main";
+import { Route, Link, Routes, Outlet, BrowserRouter } from "react-router-dom";
+import Test from "./playground/test";
+import DistortedSpirit from "./projects/DistortedSpirit/DistortedSpirit";
+import ToBelieve from "./projects/ToBelieve/ToBelieve";
+import React, { useState } from "react";
+import { Button, List, ListItem, SwipeableDrawer } from "@mui/material";
+import styled from "styled-components";
+import SlimeMold from "./projects/SlimeMold/SlimeMold";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/playground" element={<Test />}></Route>
           <Route path="/distorted-spirit" element={<DistortedSpirit />}></Route>
           <Route path="/to-believe" element={<ToBelieve />}></Route>
+          <Route path="/slime-mold" element={<SlimeMold />}></Route>
           <Route path="*" element={<h1>hi</h1>} />
           {/* <Route path="/">
           <h1>Home</h1>
@@ -49,14 +51,14 @@ const StyledNav = styled.nav`
 `;
 
 const Navbar = () => {
-  const anchor = 'left';
+  const anchor = "left";
   const [open, setOpen] = useState(false);
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
       ) {
         return;
       }
@@ -103,6 +105,9 @@ const Navbar = () => {
             </ListItem>
             <ListItem>
               <Link to="/to-believe">to believe</Link>
+            </ListItem>
+            <ListItem>
+              <Link to="/slime-mold">slime mold</Link>
             </ListItem>
           </List>
         </SwipeableDrawer>
