@@ -1,6 +1,5 @@
 import p5 from "p5";
 
-const agentColor = [0, 0, 0];
 const agentsNum = 1000;
 const sensorOffset = 10;
 const sensorAngle = Math.PI / 7;
@@ -14,15 +13,7 @@ export class Agent {
   constructor(p: p5) {
     this.p = p;
     this.x = p.width / 2;
-    console.log(
-      "🚀 ~ file: Agent.ts:17 ~ Agent ~ constructor ~ this.x:",
-      this.x
-    );
     this.y = p.height / 2;
-    console.log(
-      "🚀 ~ file: Agent.ts:19 ~ Agent ~ constructor ~ this.y:",
-      this.y
-    );
     this.dir = p.random(p.TWO_PI);
   }
 
@@ -67,7 +58,7 @@ export class Agents {
   constructor(p5: p5) {
     this.agents = Array(agentsNum)
       .fill(0)
-      .map((e) => new Agent(p5));
+      .map((_) => new Agent(p5));
   }
   update() {
     this.agents.forEach((e) => e.updateDirection());
