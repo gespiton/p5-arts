@@ -1,3 +1,8 @@
 {
-  "cSpell.words": ["Landmarker", "mult", "Perlin"]
+  "cSpell.words": [
+    "Landmarker",
+    "mult",
+    "Perlin"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

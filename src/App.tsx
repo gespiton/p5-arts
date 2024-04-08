@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { Button, List, ListItem, SwipeableDrawer } from "@mui/material";
 import styled from "styled-components";
 import SlimeMold from "./projects/SlimeMold/SlimeMold";
+import { GestureTest } from "./projects/GestureTest/GestureTest";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/distorted-spirit" element={<DistortedSpirit />}></Route>
           <Route path="/to-believe" element={<ToBelieve />}></Route>
           <Route path="/slime-mold" element={<SlimeMold />}></Route>
+          <Route path="/gesture-test" element={<GestureTest />}></Route>
           <Route path="*" element={<h1>hi</h1>} />
           {/* <Route path="/">
           <h1>Home</h1>
@@ -109,6 +111,10 @@ const Navbar = () => {
             <ListItem>
               <Link to="/slime-mold">slime mold</Link>
             </ListItem>
+            <ListItem>
+              <Link to="/gesture-test">gesture test</Link>
+            </ListItem>
+ 
           </List>
         </SwipeableDrawer>
       </React.Fragment>

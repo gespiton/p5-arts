@@ -1,17 +1,16 @@
-import { HandLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
-import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
-import { HAND_CONNECTIONS } from '@mediapipe/hands';
+import { DrawingUtils, FilesetResolver, HandLandmarkerResult, GestureRecognizer, NormalizedLandmark, Category, } from '@mediapipe/tasks-vision';
 import { useCallback, useEffect, useRef } from 'react';
 
 const runningMode = 'VIDEO';
 
 const createHandLandMarker = async () => {
   const vision = await FilesetResolver.forVisionTasks(
-    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.1.0-alpha-11/wasm'
+    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm'
   );
-  const handLandMarker = await HandLandmarker.createFromOptions(vision, {
+  const handLandMarker = await GestureRecognizer.createFromOptions(vision, {
     baseOptions: {
-      modelAssetPath: `https://storage.googleapis.com/mediapipe-assets/hand_landmarker.task`,
+      modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task',
+      delegate: "GPU"
     },
     runningMode: runningMode,
     numHands: 2,
@@ -19,14 +18,43 @@ const createHandLandMarker = async () => {
   return handLandMarker;
 };
 
+export type HandPositionInfo = {
+  fingerPosition: (NormalizedLandmark[] | null)[],
+  handedness: Category[][]
+}
+
+function transformHandPositionInfo(result: HandLandmarkerResult): HandPositionInfo {
+  const hand1 = result.landmarks[0];
+  const hand2 = result.landmarks[1];
+  // flip hand horizontally
+  if (hand1) {
+    for (let i = 0; i < hand1.length; i++) {
+      hand1[i].x = 1 - hand1[i].x;
+    }
+  }
+  if (hand2) {
+    for (let i = 0; i < hand2.length; i++) {
+      hand2[i].x = 1 - hand2[i].x;
+    }
+  }
+
+  const hand1FingerTip = hand1 ? [hand1[4], hand1[8], hand1[12], hand1[16], hand1[20]] : null
+  const hand2FingerTip = hand2 ? [hand2[0], hand2[4], hand2[8], hand2[12], hand2[16]] : null
+  return {
+    fingerPosition: [hand1FingerTip, hand2FingerTip],
+    handedness: result.handedness
+  }
+}
+
 export function useGestureDetector(config: {
   canvasElement: HTMLCanvasElement;
   videoElement: HTMLVideoElement;
   enableCameraButton: HTMLButtonElement;
   height: string;
   width: string;
+  onResults: (results: HandPositionInfo) => void
 }) {
-  const { videoElement, enableCameraButton, canvasElement, height, width } =
+  const { videoElement, enableCameraButton, canvasElement, height, width, onResults } =
     config;
   console.log(
     '🚀 ~ file: useGestureDetector.ts:30 ~ videoElement, enableCameraButton, canvasElement:',
@@ -34,47 +62,52 @@ export function useGestureDetector(config: {
     enableCameraButton,
     canvasElement
   );
-  const handLandMarkerRef = useRef<HandLandmarker>();
+  const gestureRecognizerRef = useRef<GestureRecognizer>();
   const predictWebcam = useCallback(async () => {
     canvasElement.style.height = height;
     videoElement.style.height = height;
     canvasElement.style.width = width;
     videoElement.style.width = width;
+    videoElement.hidden = true;
     // Now let's start detecting the stream.
-    const handLandmarker = handLandMarkerRef.current;
-    if (!handLandmarker) {
+    const gestureRecognizer = gestureRecognizerRef.current;
+    if (!gestureRecognizer) {
       console.log('Wait! handLandmarker not loaded yet.');
       return;
     }
     // await handLandmarker.setOptions({ runningMode: 'VIDEO' });
     let startTimeMs = performance.now();
-    const results = handLandmarker.detectForVideo(videoElement, startTimeMs);
+    const results = gestureRecognizer.recognizeForVideo(videoElement, startTimeMs);
     const canvasCtx = canvasElement.getContext('2d');
 
     if (canvasCtx === null) {
+      console.log("🚀 ~ predictWebcam ~ canvasCtx:", canvasCtx)
       throw new Error('Canvas context is null');
     }
 
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+    onResults(transformHandPositionInfo(results))
+    // test code, open this to draw hand
+    const drawingUtils = new DrawingUtils(canvasCtx)
     if (results.landmarks) {
       for (const landmarks of results.landmarks) {
-        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
+        drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
           color: '#00FF00',
           lineWidth: 5,
         });
-        drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', lineWidth: 2 });
+        drawingUtils.drawLandmarks(landmarks, { color: '#FF0000', lineWidth: 2 });
       }
     }
     canvasCtx.restore();
 
     // Call this function again to keep predicting when the browser is ready.
     window.requestAnimationFrame(predictWebcam);
-  }, [videoElement, canvasElement, height, width]);
+  }, [canvasElement, height, onResults, videoElement, width]);
 
   const enableCam = useCallback(() => {
     // Enable the live webcam view and start detection.
-    if (!handLandMarkerRef.current) {
+    if (!gestureRecognizerRef.current) {
       console.log('Wait! objectDetector not loaded yet.');
       return;
     }
@@ -82,6 +115,7 @@ export function useGestureDetector(config: {
     // getUsermedia parameters.
     const constraints = {
       video: true,
+
     };
 
     // Activate the webcam stream.
@@ -99,7 +133,7 @@ export function useGestureDetector(config: {
       }
       console.log('video and canvas loaded');
       createHandLandMarker().then((handLandmarker) => {
-        handLandMarkerRef.current = handLandmarker;
+        gestureRecognizerRef.current = handLandmarker;
         const hasGetUserMedia = () => !!navigator.mediaDevices?.getUserMedia;
         console.log(
           '🚀 ~ file: useGestureDetector.ts:89 ~ init ~ hasGetUserMedia:',
