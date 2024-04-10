@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRefWithUpdate } from '../../hooks/useCallbackRef';
+import { useRefWithUpdate } from '../hooks/useCallbackRef';
 import { HandPositionInfo, useGestureDetector } from './useGestureDetector';
 
 const Canvas = styled.canvas`

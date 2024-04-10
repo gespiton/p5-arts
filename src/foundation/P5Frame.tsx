@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useRefWithUpdate } from "../hooks/useCallbackRef";
+import { useRefWithUpdate } from "./hooks/useCallbackRef";
 import p5 from "p5";
 import styled from "styled-components";
 
