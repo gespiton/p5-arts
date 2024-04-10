@@ -142,7 +142,10 @@ export function useGestureDetector(config: {
         // If webcam supported, add event listener to button for when user
         // wants to activate it.
         if (hasGetUserMedia()) {
-          enableCameraButton.addEventListener('click', enableCam);
+          setTimeout(() => {
+            enableCam();
+          }, 300);
+          // enableCameraButton.addEventListener('click', enableCam);
         } else {
           console.warn('getUserMedia() is not supported by your browser');
         }

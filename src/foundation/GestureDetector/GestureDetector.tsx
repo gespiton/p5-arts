@@ -22,7 +22,6 @@ onHandPosUpdated: (result: HandPositionInfo)=>void
   const [handPosition, setHandPosition] = useState<HandPositionInfo | null>(null);
   const onResult = useCallback<(result: HandPositionInfo)=>void>((result)=>{
     setHandPosition(result);
-    // console.log(result.fingerPosition)
   },[]);
 
   useEffect(()=>{
@@ -43,7 +42,6 @@ onHandPosUpdated: (result: HandPositionInfo)=>void
     <div>
       <Video hidden ref={videoRef} autoPlay playsInline />
       <Canvas ref={canvasRef} />
-      <button ref={enableCamButtonRef}>enable cam</button>
     </div>
   );
 }
