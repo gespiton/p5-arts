@@ -60,8 +60,25 @@ export class BaseParticle {
     this.acc.add(force);
   }
 
+  applyFriction(coefficient: number) {
+    const friction = this.vel.copy().mult(-1).normalize().mult(coefficient);
+    this.applyForce(friction);
+  }
+
+  applyFluidResistance(coefficient: number) {
+    const speed = this.vel.mag();
+    const dragForce = this.vel.copy().mult(-1).normalize().mult(coefficient * speed * speed);
+    this.applyForce(dragForce);
+  }
+
   update() {
+    // round this.acc to 2 decimal places
+    this.acc.x = Math.round(this.acc.x * 100) / 100;
+    this.acc.y = Math.round(this.acc.y * 100) / 100;
     this.vel.add(this.acc);
+    // console.log("force direction",
+    //   this.acc.heading() * 180 / Math.PI,
+    // )
     this.pos.add(this.vel);
     this.acc.set(0, 0);
 

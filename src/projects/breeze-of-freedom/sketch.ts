@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import { Oscillator } from '../foundation/Oscillator';
+import { Oscillator } from '../../foundation/Oscillator';
 
 export function breezeOfFreedomSketch(p: p5) {
   let o: Oscillator | null = null;

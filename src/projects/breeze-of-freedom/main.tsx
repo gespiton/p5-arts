@@ -1,4 +1,4 @@
-import { P5Frame } from '../foundation/P5Frame';
+import { P5Frame } from '../../foundation/P5Frame';
 import { breezeOfFreedomSketch } from './sketch';
 
 const MainPage = () => {

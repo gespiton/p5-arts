@@ -1,5 +1,5 @@
 import "./App.css";
-import BreezeOfFreedom from "./breeze-of-freedom/main";
+import BreezeOfFreedom from "./projects/breeze-of-freedom/main";
 import { Route, Link, Routes, Outlet, BrowserRouter } from "react-router-dom";
 import Test from "./playground/test";
 import DistortedSpirit from "./projects/DistortedSpirit/DistortedSpirit";

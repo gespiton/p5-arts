@@ -50,6 +50,7 @@ class GestureDetectorCore {
   width: string;
   onResults: (results: HandPositionInfo) => void;
   gestureRecognizer: GestureRecognizer | null = null;
+  offlineCanvas: OffscreenCanvas | null = null;
 
   static instance: GestureDetectorCore | null = null;
 
@@ -83,6 +84,10 @@ class GestureDetectorCore {
   }
 
   init() {
+    this.canvasElement.style.height = this.height;
+    this.videoElement.style.height = this.height;
+    this.canvasElement.style.width = this.width;
+    this.videoElement.style.width = this.width;
     createHandLandMarker().then((handLandMarker) => {
       this.gestureRecognizer = handLandMarker;
       const hasGetUserMedia = () => !!navigator.mediaDevices?.getUserMedia;
@@ -108,9 +113,10 @@ class GestureDetectorCore {
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
         this.videoElement.srcObject = stream;
         this.videoElement.hidden = false;
-        // this.videoElement.addEventListener('loadeddata', this.predictWebcam)
         this.videoElement.onloadedmetadata = () => {
           this.videoElement.play();
+          this.offlineCanvas = new OffscreenCanvas(this.videoElement.width, this.videoElement.height);
+          this.videoElement.hidden = true;
           this.predictWebcam();
         };
       })
@@ -119,11 +125,7 @@ class GestureDetectorCore {
 
   predictWebcam = () => {
     console.log('predictWebcam() run')
-    this.canvasElement.style.height = this.height;
-    this.videoElement.style.height = this.height;
-    this.canvasElement.style.width = this.width;
-    this.videoElement.style.width = this.width;
-    this.videoElement.hidden = true;
+
 
     // Now let's start detecting the stream.
     if (!this.gestureRecognizer) {
@@ -140,10 +142,11 @@ class GestureDetectorCore {
       throw new Error('Canvas context is null');
     }
 
-    canvasCtx.save();
-    canvasCtx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
     this.onResults(transformHandPositionInfo(results))
     // test code, open this to draw hand
+    canvasCtx.save();
+    canvasCtx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
+
     const drawingUtils = new DrawingUtils(canvasCtx)
     if (results.landmarks) {
       for (const landmarks of results.landmarks) {
