@@ -1,5 +1,5 @@
 import p5 from "p5";
-import { HandPositionInfo } from "../../foundation/GestureDetector/useGestureDetector";
+import { HandPositionInfo } from "../../foundation/GestureDetector/GestureDetectorCore";
 
 const createGestureDetectorDemoSketch = (handPositionRef: {
   current: HandPositionInfo | null;

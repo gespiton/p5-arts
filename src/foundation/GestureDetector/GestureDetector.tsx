@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useRefWithUpdate } from '../hooks/useCallbackRef';
-import { HandPositionInfo, useGestureDetector } from './useGestureDetector';
+import { GestureDetectorCore, HandPositionInfo } from './GestureDetectorCore';
 
 const Canvas = styled.canvas`
   width: 200px;
@@ -18,26 +18,31 @@ onHandPosUpdated: (result: HandPositionInfo)=>void
 }) {
   const videoRef = useRefWithUpdate<HTMLVideoElement>();
   const canvasRef = useRefWithUpdate<HTMLCanvasElement>();
-  const enableCamButtonRef = useRefWithUpdate<HTMLButtonElement>();
-  const [handPosition, setHandPosition] = useState<HandPositionInfo | null>(null);
-  const onResult = useCallback<(result: HandPositionInfo)=>void>((result)=>{
-    setHandPosition(result);
-  },[]);
 
-  useEffect(()=>{
-    if(handPosition){
-      onResult(handPosition);
+  const videoElement = videoRef.current;
+  const canvasElement = canvasRef.current;
+
+  useMemo(()=>{
+    console.log('i run once')
+  },[])
+
+  useMemo(() => {
+    if(!videoElement || !canvasElement ){
+      console.log('Not all elements are ready')
+      return null;
     }
-  } ,[handPosition, onResult]);
-
-  useGestureDetector({
-    videoElement: videoRef.current!,
-    canvasElement: canvasRef.current!,
-    enableCameraButton: enableCamButtonRef.current!,
-    height: '200',
-    width: '200',
-    onResults:  props.onHandPosUpdated
-  });
+    console.log('creating gesture detector')
+    return GestureDetectorCore.getInstance({
+      canvasElement,
+      videoElement,
+      height: '200px',
+      width: '200px',
+      onResults: props.onHandPosUpdated
+    })}, [
+      videoElement,
+      canvasElement,
+      props.onHandPosUpdated
+    ])
   return (
     <div>
       <Video hidden ref={videoRef} autoPlay playsInline />
