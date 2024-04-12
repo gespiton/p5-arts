@@ -1,6 +1,7 @@
 import p5 from "p5";
 import { BaseParticle } from "../../foundation/particleSystem/BaseParticle";
 import { HandPositionInfo } from "../../foundation/GestureDetector/GestureDetectorCore";
+import { NormalizedLandmark } from "@mediapipe/tasks-vision";
 
 
 class FingerParticle extends BaseParticle {
@@ -32,38 +33,41 @@ const createGestureDetectorDemoSketch = (handPositionRef: {
     p.frameRate(60);
     p.createCanvas(canvasWidth, canvasHeight);
     p.pixelDensity(1);
-    forceSlider = p.createSlider(0.01, 0.2, 0.03, 0.01)
+    forceSlider = p.createSlider(0.01, 0.2, 0.08, 0.01)
     frictionSlider = p.createSlider(0.1, 1, 0.1, 0.1)
   };
 
+  let previousHandPosition: NormalizedLandmark[] | null = null;
   p.draw = function () {
     p.clear(0, 0, 0, 0);
     p.background(0);
     const handPosition = handPositionRef.current;
-    const hand1 = handPosition?.fingerPosition[0] ?? [];
-    console.log("🚀 ~ hand1:", hand1)
-    for (let i = 0; i < hand1.length; i++) {
-      const finger = Fingers[i];
-      const force = p.createVector(
-        p.map(hand1[i].x, 0, 1, 0, p.width),
-        p.map(hand1[i].y, 0, 1, 0, p.height))
-        .sub(finger.pos)
-        .mult(Number(forceSlider.value()))
-        .limit(15);
-      // const force = p.createVector(
-      //   p.mouseX,
-      //   p.mouseY)
-      //   .sub(finger.pos)
-      //   .mult(Number(forceSlider.value()))
-      //   .limit(15);
-      finger.applyForce(force);
-      const friction = Number(frictionSlider.value())
-      finger.applyFluidResistance(friction);
-      // finger.applyFriction(friction);
-      finger.update()
-      if (i === 0) {
+    const hand1 = handPosition?.fingerPosition[0] ?? previousHandPosition;
+    if (hand1) {
+      previousHandPosition = hand1;
+      for (let i = 0; i < hand1.length; i++) {
+        const finger = Fingers[i];
+        const force = p.createVector(
+          p.map(hand1[i].x, 0, 1, 0, p.width),
+          p.map(hand1[i].y, 0, 1, 0, p.height))
+          .sub(finger.pos)
+          .mult(Number(forceSlider.value()))
+          .limit(15);
+        // const force = p.createVector(
+        //   p.mouseX,
+        //   p.mouseY)
+        //   .sub(finger.pos)
+        //   .mult(Number(forceSlider.value()))
+        //   .limit(15);
+        finger.applyForce(force);
+        const friction = Number(frictionSlider.value())
+        finger.applyFluidResistance(friction);
+        // finger.applyFriction(friction);
+        finger.update()
+        if (i === 0) {
+        }
+        finger.show();
       }
-      finger.show();
     }
     // } else {
     //   for (let i = 0; i < Fingers.length; i++) {

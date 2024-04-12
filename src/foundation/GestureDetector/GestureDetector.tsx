@@ -35,8 +35,8 @@ onHandPosUpdated: (result: HandPositionInfo)=>void
     return GestureDetectorCore.getInstance({
       canvasElement,
       videoElement,
-      height: '200px',
-      width: '200px',
+      height: 200,
+      width: 200,
       onResults: props.onHandPosUpdated
     })}, [
       videoElement,
