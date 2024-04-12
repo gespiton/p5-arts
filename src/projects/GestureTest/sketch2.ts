@@ -53,29 +53,16 @@ const createGestureDetectorDemoSketch = (handPositionRef: {
           .sub(finger.pos)
           .mult(Number(forceSlider.value()))
           .limit(15);
-        // const force = p.createVector(
-        //   p.mouseX,
-        //   p.mouseY)
-        //   .sub(finger.pos)
-        //   .mult(Number(forceSlider.value()))
-        //   .limit(15);
         finger.applyForce(force);
         const friction = Number(frictionSlider.value())
         finger.applyFluidResistance(friction);
-        // finger.applyFriction(friction);
+        finger.applyFriction(0.1);
         finger.update()
         if (i === 0) {
         }
         finger.show();
       }
     }
-    // } else {
-    //   for (let i = 0; i < Fingers.length; i++) {
-    //     const finger = Fingers[i];
-    //     finger.update()
-    //     finger.show();
-    //   }
-    // }
   };
 }
 export { createGestureDetectorDemoSketch }

@@ -1,4 +1,4 @@
-import { Category, DrawingUtils, FilesetResolver, GestureRecognizer, HandLandmarkerResult, NormalizedLandmark } from "@mediapipe/tasks-vision";
+import { Category, DrawingUtils, GestureRecognizer, HandLandmarkerResult, NormalizedLandmark } from "@mediapipe/tasks-vision";
 
 export type HandPositionInfo = {
   fingerPosition: (NormalizedLandmark[] | null)[],
@@ -27,21 +27,6 @@ function transformHandPositionInfo(result: HandLandmarkerResult): HandPositionIn
     handedness: result.handedness
   }
 }
-
-const createHandLandMarker = async () => {
-  const vision = await FilesetResolver.forVisionTasks(
-    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm'
-  );
-  const handLandMarker = await GestureRecognizer.createFromOptions(vision, {
-    baseOptions: {
-      modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task',
-      delegate: "GPU"
-    },
-    runningMode: "VIDEO",
-    numHands: 2,
-  });
-  return handLandMarker;
-};
 
 class GestureDetectorCore {
   canvasElement: HTMLCanvasElement;
