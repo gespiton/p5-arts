@@ -9,6 +9,7 @@ import { Button, List, ListItem, SwipeableDrawer } from "@mui/material";
 import styled from "styled-components";
 import SlimeMold from "./projects/SlimeMold/SlimeMold";
 import { GestureTest } from "./projects/GestureTest/GestureTest";
+import { GenerativeArtLearning } from "./projects/GenerativeArtLearning/Main";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/to-believe" element={<ToBelieve />}></Route>
           <Route path="/slime-mold" element={<SlimeMold />}></Route>
           <Route path="/gesture-test" element={<GestureTest />}></Route>
+          <Route path="/generative-art-learning" element={<GenerativeArtLearning />}></Route>
           <Route path="*" element={<h1>hi</h1>} />
           {/* <Route path="/">
           <h1>Home</h1>
@@ -114,7 +116,9 @@ const Navbar = () => {
             <ListItem>
               <Link to="/gesture-test">gesture test</Link>
             </ListItem>
- 
+            <ListItem>
+              <Link to="/generative-art-learning">learning</Link>
+            </ListItem>
           </List>
         </SwipeableDrawer>
       </React.Fragment>
