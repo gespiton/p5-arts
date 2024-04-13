@@ -48,13 +48,25 @@ const spiralRandom = (p: p5) => {
     p,
     step: 0.01,
     xOffset: p.random(1000),
-    range: [100, 255]
+    range: [0, 255]
   });
   const colorRPNoise = new PerlinNoise({
     p,
     step: 0.01,
     xOffset: p.random(1000),
-    range: [0, 255]
+    range: [100, 255]
+  });
+  const alphaPNoise = new PerlinNoise({
+    p,
+    step: 0.01,
+    xOffset: p.random(1000),
+    range: [4, 10]
+  });
+  const diameterPNoise = new PerlinNoise({
+    p,
+    step: 0.01,
+    xOffset: p.random(1000),
+    range: [3, 5]
   });
   p.draw = function () {
     for (let i = 0; i < 1000; i++) {
@@ -65,14 +77,13 @@ const spiralRandom = (p: p5) => {
       const x = p.width / 2 + radius * radiusNoise * p.cos(rad);
       console.log("🚀 ~ spiralRandom ~ x :", x)
       const y = p.height / 2 + radius * radiusNoise * p.sin(rad);
-      p.fill(colorRPNoise.next(), colorGPNoise.next(), colorPNoise.next(), 10);
+      p.fill(colorRPNoise.next(), colorGPNoise.next(), colorPNoise.next(), alphaPNoise.next());
       p.noStroke();
-      p.ellipseMode(p.CENTER);
-      p.ellipse(x, y, 3, 3);
+      p.circle(x, y, diameterPNoise.next());
       lastPointX = x;
       lastPointY = y;
       radius += 0.1;
-      if (radius > 400) {
+      if (radius > 600) {
         radius = initialRadius;
       }
     }
