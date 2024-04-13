@@ -41,15 +41,20 @@ const spiralRandom = (p: p5) => {
   const colorPNoise = new PerlinNoise({
     p,
     step: 0.01,
-    xOffset: 0,
-    yOffset: 0,
+    xOffset: p.random(1000),
+    range: [0, 255]
   });
   const colorGPNoise = new PerlinNoise({
     p,
     step: 0.01,
-    xOffset: 0,
-    yOffset: 0,
-    range: [0.8, 1]
+    xOffset: p.random(1000),
+    range: [100, 255]
+  });
+  const colorRPNoise = new PerlinNoise({
+    p,
+    step: 0.01,
+    xOffset: p.random(1000),
+    range: [0, 255]
   });
   p.draw = function () {
     for (let i = 0; i < 1000; i++) {
@@ -60,7 +65,7 @@ const spiralRandom = (p: p5) => {
       const x = p.width / 2 + radius * radiusNoise * p.cos(rad);
       console.log("🚀 ~ spiralRandom ~ x :", x)
       const y = p.height / 2 + radius * radiusNoise * p.sin(rad);
-      p.fill(0, 200 * colorGPNoise.next(), 255 * colorPNoise.next(), 10);
+      p.fill(colorRPNoise.next(), colorGPNoise.next(), colorPNoise.next(), 10);
       p.noStroke();
       p.ellipseMode(p.CENTER);
       p.ellipse(x, y, 3, 3);
