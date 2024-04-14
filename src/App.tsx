@@ -1,15 +1,15 @@
-import "./App.css";
-import BreezeOfFreedom from "./projects/breeze-of-freedom/main";
-import { Route, Link, Routes, Outlet, BrowserRouter } from "react-router-dom";
-import Test from "./playground/test";
-import DistortedSpirit from "./projects/DistortedSpirit/DistortedSpirit";
-import ToBelieve from "./projects/ToBelieve/ToBelieve";
-import React, { useState } from "react";
-import { Button, List, ListItem, SwipeableDrawer } from "@mui/material";
-import styled from "styled-components";
-import SlimeMold from "./projects/SlimeMold/SlimeMold";
-import { GestureTest } from "./projects/GestureTest/GestureTest";
-import { GenerativeArtLearning } from "./projects/GenerativeArtLearning/Main";
+import './App.css';
+import BreezeOfFreedom from './projects/breeze-of-freedom/main';
+import { Route, Link, Routes, Outlet, BrowserRouter } from 'react-router-dom';
+import Test from './playground/test';
+import DistortedSpirit from './projects/DistortedSpirit/DistortedSpirit';
+import ToBelieve from './projects/ToBelieve/ToBelieve';
+import React, { useState } from 'react';
+import { Button, List, ListItem, SwipeableDrawer } from '@mui/material';
+import styled from 'styled-components';
+import SlimeMold from './projects/SlimeMold/SlimeMold';
+import { GestureTest } from './projects/GestureTest/GestureTest';
+import { GenerativeArtLearning } from './projects/GenerativeArtLearning/Main';
 
 const App = () => {
   return (
@@ -18,16 +18,21 @@ const App = () => {
         <Navbar />
         <Routes>
           <Route
-            path="/breeze-of-freedom"
+            path='/breeze-of-freedom'
             element={<BreezeOfFreedom />}
           ></Route>
-          <Route path="/playground" element={<Test />}></Route>
-          <Route path="/distorted-spirit" element={<DistortedSpirit />}></Route>
-          <Route path="/to-believe" element={<ToBelieve />}></Route>
-          <Route path="/slime-mold" element={<SlimeMold />}></Route>
-          <Route path="/gesture-test" element={<GestureTest />}></Route>
-          <Route path="/generative-art-learning" element={<GenerativeArtLearning />}></Route>
-          <Route path="*" element={<h1>hi</h1>} />
+          <Route path='/playground' element={<Test />}></Route>
+          <Route path='/distorted-spirit' element={<DistortedSpirit />}></Route>
+          <Route path='/to-believe' element={<ToBelieve />}></Route>
+          <Route path='/slime-mold' element={<SlimeMold />}></Route>
+          <Route path='/gesture-test' element={<GestureTest />}></Route>
+          <Route
+            path='/generative-art-learning'
+            element={<GenerativeArtLearning />}
+          >
+            <Route path=':sketchId' element={<GenerativeArtLearning />} />
+          </Route>
+          <Route path='*' element={<h1>hi</h1>} />
           {/* <Route path="/">
           <h1>Home</h1>
         </Route> */}
@@ -55,14 +60,14 @@ const StyledNav = styled.nav`
 `;
 
 const Navbar = () => {
-  const anchor = "left";
+  const anchor = 'left';
   const [open, setOpen] = useState(false);
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
       ) {
         return;
       }
@@ -72,7 +77,7 @@ const Navbar = () => {
   return (
     <StyledNav>
       <React.Fragment key={anchor}>
-        <StyledButton size="large" onClick={toggleDrawer(true)}>
+        <StyledButton size='large' onClick={toggleDrawer(true)}>
           {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -96,28 +101,28 @@ const Navbar = () => {
         >
           <List>
             <ListItem>
-              <Link to="/">Home</Link>
+              <Link to='/'>Home</Link>
             </ListItem>
             <ListItem>
-              <Link to="/breeze-of-freedom">Breeze of Freedom</Link>
+              <Link to='/breeze-of-freedom'>Breeze of Freedom</Link>
             </ListItem>
             <ListItem>
-              <Link to="/playground">playground</Link>
+              <Link to='/playground'>playground</Link>
             </ListItem>
             <ListItem>
-              <Link to="/distorted-spirit">distorted spirit</Link>
+              <Link to='/distorted-spirit'>distorted spirit</Link>
             </ListItem>
             <ListItem>
-              <Link to="/to-believe">to believe</Link>
+              <Link to='/to-believe'>to believe</Link>
             </ListItem>
             <ListItem>
-              <Link to="/slime-mold">slime mold</Link>
+              <Link to='/slime-mold'>slime mold</Link>
             </ListItem>
             <ListItem>
-              <Link to="/gesture-test">gesture test</Link>
+              <Link to='/gesture-test'>gesture test</Link>
             </ListItem>
             <ListItem>
-              <Link to="/generative-art-learning">learning</Link>
+              <Link to='/generative-art-learning'>learning</Link>
             </ListItem>
           </List>
         </SwipeableDrawer>
