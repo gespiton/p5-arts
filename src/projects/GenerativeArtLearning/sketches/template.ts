@@ -21,8 +21,14 @@ const threeDDrawing = (p: p5) => {
     p.background(0)
   };
 
-  p.draw = function () {
+  function drawFrame() {
 
+  }
+
+  p.draw = function () {
+    p.orbitControl();
+    drawFrame();
   };
+
 }
 export { threeDDrawing }

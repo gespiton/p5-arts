@@ -65,7 +65,6 @@ const threeDSphere = (p: p5) => {
       lastY = y;
       lastZ = z;
     }
-
   };
 }
 export { threeDSphere }
