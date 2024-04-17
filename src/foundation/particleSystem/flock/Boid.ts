@@ -79,7 +79,7 @@ class Boid {
   }
 
   flock(boids: Boid[]) {
-    const distances = boids.map(b => this.position.dist(b.position))
+    const distances = [0]
     const alignment = this.align(boids, distances)
     const cohesion = this.cohesion(boids, distances)
     const separation = this.separation(boids, distances)
@@ -109,7 +109,7 @@ class Boid {
     let total = 0
     for (let i = 0; i < boids.length; i++) {
       const other = boids[i]
-      const distance = distances[i]
+      const distance = this.calculateDistance(other, i)
       if (other !== this && distance < perceptionRadius) {
         const diff = this.position.copy().sub(other.position)
         diff.div(distance)
@@ -139,7 +139,8 @@ class Boid {
     for (let i = 0; i < boids.length; i++) {
       const other = boids[i]
       if (other === this) continue
-      const distance = distances[i]
+      const distance = this.calculateDistance(other, i)
+
       if (distance < perceptionRadius) {
         steering.add(other.velocity)
         total++
@@ -154,6 +155,26 @@ class Boid {
     return steering
   }
 
+  // cache: Map<number,number> = new Map()
+  // cache: Map<number,number> = new Map()
+  cache: { [index: number]: number } = []
+  calculateDistance(other: Boid, index: number) {
+    // if (this.cache[index] !== undefined) {
+    //   return this.cache[index]
+    // } else {
+    //   const distance = this.position.dist(other.position)
+    //   this.cache[index] = distance
+    //   return distance
+    // }
+    if (this.cache[index] !== undefined) {
+      return this.cache[index]!
+    } else {
+      const distance = this.position.dist(other.position)
+      this.cache[index] = distance
+      return distance
+    }
+  }
+
   // Cohesion
   // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
   cohesion(boids: Boid[], distances: number[]) {
@@ -163,7 +184,7 @@ class Boid {
     for (let i = 0; i < boids.length; i++) {
       const other = boids[i]
       if (other === this) continue
-      const distance = distances[i]
+      const distance = this.calculateDistance(other, i)
       if (distance < perceptionRadius) {
         steering.add(other.position)
         total++
@@ -186,7 +207,7 @@ class Boid {
     for (let i = 0; i < boids.length; i++) {
       const other = boids[i]
       if (other === this) continue
-      const distance = distances[i]
+      const distance = this.calculateDistance(other, i)
       if (distance < perceptionRadius) {
         newColorAcc.add(other.color)
         neighborCount++
@@ -206,6 +227,9 @@ class Boid {
     this.update()
     this.borders()
     this.render()
+    this.cache = []
+    // this.cache.clear()
+    // this.cache = {}
   }
 
   render() {
