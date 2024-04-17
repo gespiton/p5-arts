@@ -30,6 +30,7 @@ class Boid {
   livenessNoise: PerlinNoise
   color: Vector
   colorAcc: Vector = new Vector(0, 0, 0)
+  id = Date.now().toString()
 
   constructor(config: BoidConfig) {
     this.acceleration = new Vector(0, 0)
@@ -78,10 +79,11 @@ class Boid {
   }
 
   flock(boids: Boid[]) {
-    const alignment = this.align(boids)
-    const cohesion = this.cohesion(boids)
-    const separation = this.separation(boids)
-    this.colorAcc = this.getColor(boids)
+    const distances = boids.map(b => this.position.dist(b.position))
+    const alignment = this.align(boids, distances)
+    const cohesion = this.cohesion(boids, distances)
+    const separation = this.separation(boids, distances)
+    this.colorAcc = this.getColor(boids, distances)
     alignment.mult(1)
     cohesion.mult(1)
     separation.mult(0.5)
@@ -101,12 +103,13 @@ class Boid {
 
   // Separation
   // Method checks for nearby boids and steers away
-  separation(boids: Boid[]) {
+  separation(boids: Boid[], distances: number[]) {
     const perceptionRadius = this.separationRadius
     const steering = new Vector()
     let total = 0
-    for (const other of boids) {
-      const distance = this.position.dist(other.position)
+    for (let i = 0; i < boids.length; i++) {
+      const other = boids[i]
+      const distance = distances[i]
       if (other !== this && distance < perceptionRadius) {
         const diff = this.position.copy().sub(other.position)
         diff.div(distance)
@@ -129,13 +132,15 @@ class Boid {
 
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
-  align(boids: Boid[]) {
+  align(boids: Boid[], distances: number[]) {
     const perceptionRadius = this.alignmentRadius
     const steering = new Vector()
     let total = 0
-    for (const other of boids) {
-      const distance = this.position.dist(other.position)
-      if (other !== this && distance < perceptionRadius) {
+    for (let i = 0; i < boids.length; i++) {
+      const other = boids[i]
+      if (other === this) continue
+      const distance = distances[i]
+      if (distance < perceptionRadius) {
         steering.add(other.velocity)
         total++
       }
@@ -151,13 +156,15 @@ class Boid {
 
   // Cohesion
   // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
-  cohesion(boids: Boid[]) {
+  cohesion(boids: Boid[], distances: number[]) {
     const perceptionRadius = this.cohesionRadius
     const steering = new Vector()
     let total = 0
-    for (const other of boids) {
-      const distance = this.position.dist(other.position)
-      if (other !== this && distance < perceptionRadius) {
+    for (let i = 0; i < boids.length; i++) {
+      const other = boids[i]
+      if (other === this) continue
+      const distance = distances[i]
+      if (distance < perceptionRadius) {
         steering.add(other.position)
         total++
       }
@@ -172,12 +179,15 @@ class Boid {
     return steering
   }
 
-  getColor(boids: Boid[]) {
+  getColor(boids: Boid[], distances: number[]) {
+    const perceptionRadius = 30
     let newColorAcc = new Vector(0, 0, 0)
     let neighborCount = 0;
-    for (const other of boids) {
+    for (let i = 0; i < boids.length; i++) {
+      const other = boids[i]
       if (other === this) continue
-      if (this.position.dist(other.position) < 30) {
+      const distance = distances[i]
+      if (distance < perceptionRadius) {
         newColorAcc.add(other.color)
         neighborCount++
       }
@@ -185,10 +195,8 @@ class Boid {
     if (neighborCount > 0) {
       newColorAcc.div(neighborCount)
       newColorAcc.sub(this.color)
-      // newColorAcc.setMag(200)
-    }
-    if (newColorAcc.x < 0) {
-      console.log("🚀 ~ Boid ~ getColor ~ newColorAcc:", newColorAcc.x)
+      newColorAcc.mult(2)
+      newColorAcc.limit(150)
     }
     return newColorAcc
   }
