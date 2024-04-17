@@ -1,6 +1,6 @@
 import p5 from "p5";
 
-const threeDDrawing = (p: p5) => {
+export function name(p: p5) {
   const canvasWidth = 400;
   const canvasHeight = 400;
 
@@ -18,8 +18,19 @@ const threeDDrawing = (p: p5) => {
         p.loop();
       }
     }
+    p.keyPressed = () => {
+      // save image when press s
+      if (p.key === 's') {
+        p.saveCanvas('p5Image', 'png');
+      }
+    };
     p.background(0)
+    setupBasic();
   };
+
+  function setupBasic() {
+
+  }
 
   function drawFrame() {
 
@@ -31,4 +42,3 @@ const threeDDrawing = (p: p5) => {
   };
 
 }
-export { threeDDrawing }
