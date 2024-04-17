@@ -61,7 +61,10 @@ class Boid {
     this.velocity.limit(this.maxSpeed)
     this.position.add(this.velocity)
     this.acceleration.mult(0)
-    this.color = this.color.add(this.colorAcc)
+    this.color.add(this.colorAcc)
+    this.color.x = this.config.p.constrain(this.color.x, 0, 255)
+    this.color.y = this.config.p.constrain(this.color.y, 0, 255)
+    this.color.z = this.config.p.constrain(this.color.z, 0, 255)
   }
 
   // A method that calculates and applies a steering force towards a target
@@ -170,7 +173,7 @@ class Boid {
   }
 
   getColor(boids: Boid[]) {
-    let newColorAcc = this.color.copy()
+    let newColorAcc = new Vector(0, 0, 0)
     let neighborCount = 0;
     for (const other of boids) {
       if (other === this) continue
@@ -181,9 +184,11 @@ class Boid {
     }
     if (neighborCount > 0) {
       newColorAcc.div(neighborCount)
-      // newColorAcc.setMag(10)
       newColorAcc.sub(this.color)
-      newColorAcc.limit(10)
+      // newColorAcc.setMag(200)
+    }
+    if (newColorAcc.x < 0) {
+      console.log("🚀 ~ Boid ~ getColor ~ newColorAcc:", newColorAcc.x)
     }
     return newColorAcc
   }

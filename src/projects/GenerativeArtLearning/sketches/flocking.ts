@@ -1,5 +1,6 @@
 import p5 from "p5";
 import { Boid } from "../../../foundation/particleSystem/flock/Boid";
+import { PARTICLE_COUNT } from "../../ToBelieve/constant";
 
 const BoidCount = 500
 
@@ -54,9 +55,9 @@ export function flocking(p: p5) {
         radius: 3,
         render: renderBoid
       })
-      if (i < 20) {
-        b.color = p.createVector(255, 0, 0)
-      }else{
+      if (i < BoidCount / 2) {
+        b.color = p.createVector(p.random(200), p.random(240), 0)
+      } else {
         b.color = p.createVector(200, 200, 200)
       }
       boids.push(b);
