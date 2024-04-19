@@ -1,8 +1,8 @@
 import p5 from "p5";
 
 export function name(p: p5) {
-  const canvasWidth = 400;
-  const canvasHeight = 400;
+  const canvasWidth = 800;
+  const canvasHeight = 800;
 
 
   p.setup = function () {
@@ -10,7 +10,7 @@ export function name(p: p5) {
     p.createCanvas(canvasWidth, canvasHeight, p.WEBGL);
     p.pixelDensity(1);
     p.smooth();
-    p.noLoop();
+    // p.noLoop();
     p.mouseClicked = () => {
       if (p.isLooping()) {
         p.noLoop();
@@ -18,12 +18,6 @@ export function name(p: p5) {
         p.loop();
       }
     }
-    p.keyPressed = () => {
-      // save image when press s
-      if (p.key === 's') {
-        p.saveCanvas('p5Image', 'png');
-      }
-    };
     p.background(0)
     setupBasic();
   };

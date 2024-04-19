@@ -39,9 +39,9 @@ export function flocking(p: p5) {
     p.rotate(b.velocity.heading());
     p.fill(255, 255, 255, 100);
     p.stroke(b.color.x, b.color.y, b.color.z, 255);
-    // p.line(0, 0, 5, 0);
+    p.line(0, 0, 5, 0);
     // p.square(0, 0, 5)
-    p.ellipse(0, 0, 10, 3)
+    // p.ellipse(0, 0, 10, 3)
     p.pop();
   }
 
@@ -66,7 +66,8 @@ export function flocking(p: p5) {
   }
 
   function drawFrame() {
-    p.background(0, 0, 0, 5)
+    // p.background(0, 0, 0, 5)
+    p.background(210, 211, 178, 5)
     boids.forEach(boid => {
       boid.run(boids);
     });

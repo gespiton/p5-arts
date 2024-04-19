@@ -24,6 +24,16 @@ function P5Frame(props: { sketch: (p: p5) => void; autofit?: boolean }) {
           canvasContainerNode.style.height = `${canvas.height * scaleFactor}px`;
         }
       }, 1000);
+
+      const originalKeyPressed = pInstance.keyPressed;
+      pInstance.keyPressed = (event: KeyboardEvent) => {
+        // save image when press s
+        originalKeyPressed?.(event);
+        if (event.key === 's') {
+          pInstance.saveCanvas('p5Image', 'png');
+          return;
+        }
+      };
     }
     return () => {
       console.log('remove p5 instance');
