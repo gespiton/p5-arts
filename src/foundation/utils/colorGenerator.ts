@@ -1,3 +1,5 @@
+// this is taking from https://iquilezles.org/articles/palettes/
+
 import { IGenerator } from "./IGenerator";
 import p5 from "p5";
 
@@ -36,8 +38,16 @@ export class ColorGenerator implements IGenerator<p5.Vector> {
     const newB = this.b.copy();
     const newC = this.c.copy();
     const newD = this.d.copy();
-    const t = newC.mult((this.currentStep / this.totalStep)).add(newD).mult(6.28318);
-    return this.p.createVector(Math.cos(t.x), Math.cos(t.y), Math.cos(t.z)).mult(newB).add(newA);
+    const t = newC.mult(this.currentStep / this.totalStep).add(newD).mult(6.28318);
+    console.log("🚀 ~ ColorGenerator ~ next ~  t:", t)
+    const final = this.p.createVector(this.p.cos(t.x), this.p.cos(t.y), this.p.cos(t.z)).mult(newB).add(newA);
+
+    console.log("🚀 ~ ColorGenerator ~ next ~ final:", final.x, final.y, final.z)
+    return this.p.createVector(
+      this.p.map(final.x, 0, 1, 0, 255),
+      this.p.map(final.y, 0, 1, 0, 255),
+      this.p.map(final.z, 0, 1, 0, 255)
+    )
   }
 }
 

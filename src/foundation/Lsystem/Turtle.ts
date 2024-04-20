@@ -1,5 +1,6 @@
 import p5 from "p5";
 import { PerlinNoise } from "../utils/PerlinNoise";
+import { ColorGenerator } from "../utils/colorGenerator";
 
 export class Turtle {
   length: number;
@@ -21,8 +22,19 @@ export class Turtle {
   }
 
   render(sentence: string) {
-    this.p.stroke(21, 52, 72,80);
+    const colorSystem = new ColorGenerator({
+      a: this.p.createVector(0.5, 0.5, 0.5),
+      b: this.p.createVector(0.5, 0.5, 0.5),
+      c: this.p.createVector(1, 1, 1),
+      d: this.p.createVector(0, this.p.random(0.5), 0.2),
+      totalStep: sentence.length,
+      p: this.p
+    })
     for (let i = 0; i < sentence.length; i++) {
+      const color = colorSystem.next();
+      // console.log("🚀 ~ Turtle ~ render ~ color:", color)
+
+      this.p.stroke(color.x, color.y, color.z);
       let c = sentence.charAt(i);
       this.renderChar(c);
     }

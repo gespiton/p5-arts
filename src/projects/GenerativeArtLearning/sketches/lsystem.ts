@@ -14,11 +14,9 @@ export function lsystem(p: p5) {
     p.smooth();
     p.noLoop();
     p.mouseClicked = () => {
-      if (p.isLooping()) {
-        p.noLoop();
-      } else {
-        p.loop();
-      }
+      p.resetMatrix();
+      this.translate(p.mouseX, p.mouseY);
+      drawFull()
     }
     p.background(0)
     setupBasic();
@@ -69,13 +67,13 @@ export function lsystem(p: p5) {
   }
 
   p.draw = function () {
+    p.background('#DFD0B8')
     // for (let i = 0; i < 20; i++) {
     //   p.resetMatrix();
     //   p.translate(p.width / 2, p.height);
     //   drawFrame();
     // }
-    p.background('#DFD0B8')
-    p.translate(p.width / 2, p.height);
+    // p.translate(p.width / 2, p.height);
     drawFull();
   };
 
