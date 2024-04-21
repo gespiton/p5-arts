@@ -34,7 +34,7 @@ export class Turtle {
       const color = colorSystem.next();
       // console.log("🚀 ~ Turtle ~ render ~ color:", color)
 
-      this.p.stroke(color.x, color.y, color.z);
+      this.p.stroke(color.x, color.y, color.z, 200);
       let c = sentence.charAt(i);
       this.renderChar(c);
     }

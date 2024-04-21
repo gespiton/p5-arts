@@ -30,6 +30,9 @@ export function lsystem(p: p5) {
       F: "FF+[+F-F-F]-[-F+F+F]",
       // F: "F[F]-F+F[--F]+F-G",
       // G: "GF-F++G",
+      // var
+      // F: "F[F]-F+F[--F]+F-G",
+      // G: "GF-F++G",
     };
     lsystem = new LSystem("F", rules);
     turtle = new Turtle(p, 4, p.radians(25));
@@ -68,6 +71,7 @@ export function lsystem(p: p5) {
 
   p.draw = function () {
     p.background('#DFD0B8')
+    p.translate(p.width / 2, p.height / 2);
     // for (let i = 0; i < 20; i++) {
     //   p.resetMatrix();
     //   p.translate(p.width / 2, p.height);
