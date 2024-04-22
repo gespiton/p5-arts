@@ -1,4 +1,12 @@
 {
-  "cSpell.words": ["Boid", "boids", "Collatz", "Landmarker", "mult", "Perlin"],
+  "cSpell.words": [
+    "Boid",
+    "boids",
+    "Collatz",
+    "Landmarker",
+    "mandelbulb",
+    "mult",
+    "Perlin"
+  ],
   "typescript.tsdk": "node_modules/typescript/lib"
 }
