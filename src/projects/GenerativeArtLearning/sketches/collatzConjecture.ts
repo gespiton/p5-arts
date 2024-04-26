@@ -33,7 +33,6 @@ export function collatzConjecture(p: p5) {
   }
 
   function renderNode(node: CollatzConjectureNode, level: number = 0) {
-    console.log(node.value)
     numberDrawnCount.set(node.value, (numberDrawnCount.get(node.value) ?? 0) + 1)
     if (level > 71) return
     if (node) {

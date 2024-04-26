@@ -1,8 +1,9 @@
 import p5, { Vector } from "p5";
 import { PerlinNoise } from "../../../foundation/utils/PerlinNoise";
 import { NoiseLoop } from "../../../foundation/utils/NoiseLoop";
+import { ColorGenerator } from "../../../foundation/utils/colorGenerator";
 
-const PARTICLE_COUNT = 4000;
+const PARTICLE_COUNT = 3000;
 const EDGE_DISTANCE = 10;
 const ANGLE_SCALE = 5
 const PARTICLE_MOVE_DISTANCE = 15;
@@ -59,6 +60,7 @@ export const sphereConnected = (p: p5) => {
 
   const points: Particle[] = []
   const edges: [Particle, Particle][] = []
+  let colorSystem: ColorGenerator;
   p.setup = function () {
     p.frameRate(30);
     p.createCanvas(canvasWidth, canvasHeight, p.WEBGL);
@@ -135,6 +137,15 @@ export const sphereConnected = (p: p5) => {
       }
     }
 
+    colorSystem = new ColorGenerator({
+      a: p.createVector(0.5, 0.5, 0.5),
+      b: p.createVector(0.5, 0.5, 0.5),
+      c: p.createVector(1, 1, 1),
+      d: p.createVector(0, 0.1, 0.2),
+      totalStep: edges.length,
+      p: p
+    })
+
     console.log('edge count', edges.length)
   }
 
@@ -151,7 +162,7 @@ export const sphereConnected = (p: p5) => {
         pos.z
       );
       p.noStroke()
-      p.fill(255, 230)
+      p.fill(200, 230)
       p.sphere(
         p.noise(pos.x / 4, pos.y / 4, pos.z / 4)
         * (13 / point.edgesCount),
@@ -159,9 +170,10 @@ export const sphereConnected = (p: p5) => {
       )
       p.pop();
     })
-    edges.forEach(([point1, point2]) => {
+    edges.forEach(([point1, point2], i) => {
       const weight = p.map(p.min(point1.edgesCount, point2.edgesCount), 1, 10, 200, 100);
-      p.stroke(205, weight);
+      const color = colorSystem.atIndex(i);
+      p.stroke(color.x, color.y, color.z, weight);
       p.strokeWeight(1)
       const newPoint1Pos = point1.getPosition();
       const newPoint2Pos = point2.getPosition();

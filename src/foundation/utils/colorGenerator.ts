@@ -39,16 +39,30 @@ export class ColorGenerator implements IGenerator<p5.Vector> {
     const newC = this.c.copy();
     const newD = this.d.copy();
     const t = newC.mult(this.currentStep / this.totalStep).add(newD).mult(6.28318);
-    console.log("🚀 ~ ColorGenerator ~ next ~  t:", t)
     const final = this.p.createVector(this.p.cos(t.x), this.p.cos(t.y), this.p.cos(t.z)).mult(newB).add(newA);
 
-    console.log("🚀 ~ ColorGenerator ~ next ~ final:", final.x, final.y, final.z)
     return this.p.createVector(
       this.p.map(final.x, 0, 1, 0, 255),
       this.p.map(final.y, 0, 1, 0, 255),
       this.p.map(final.z, 0, 1, 0, 255)
     )
   }
+
+  atIndex(index: number) {
+    const newA = this.a.copy();
+    const newB = this.b.copy();
+    const newC = this.c.copy();
+    const newD = this.d.copy();
+    const t = newC.mult(index / this.totalStep).add(newD).mult(6.28318);
+    const final = this.p.createVector(this.p.cos(t.x), this.p.cos(t.y), this.p.cos(t.z)).mult(newB).add(newA);
+
+    return this.p.createVector(
+      this.p.map(final.x, 0, 1, 0, 255),
+      this.p.map(final.y, 0, 1, 0, 255),
+      this.p.map(final.z, 0, 1, 0, 255)
+    )
+  }
+
 }
 
 
